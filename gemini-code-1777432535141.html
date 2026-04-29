@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Misión Patrimonio: El Salón</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+    :root {
+        --bg:      #050914;
+        --glass:   rgba(255,255,255,0.05);
+        --glass-b: rgba(255,255,255,0.10);
+        --text:    #f1f5f9;
+        --muted:   rgba(241,245,249,0.50);
+        --primary: #818cf8;
+        --good:    #4ade80;
+        --decent:  #60a5fa;
+        --risky:   #fbbf24;
+        --bad:     #f87171;
+        --r:       16px;
+        --r-sm:    10px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+        font-family: 'Poppins', 'Segoe UI', system-ui, sans-serif;
+        background: var(--bg); color: var(--text);
+        min-height: 100vh; overflow-x: hidden;
+    }
+
+    /* ── BACKGROUND ── */
+    .bg { position:fixed; inset:0; z-index:0; overflow:hidden;
+          background:linear-gradient(135deg,#050914 0%,#0a0e21 100%); }
+    .orb { position:absolute; border-radius:50%; filter:blur(80px); pointer-events:none;
+           animation:orbFloat 22s ease-in-out infinite; }
+    .o1 { width:520px; height:520px; background:rgba(129,140,248,.13); top:-180px; left:-100px; }
+    .o2 { width:420px; height:420px; background:rgba(96,165,250,.10);  bottom:-120px; right:-80px; animation-delay:-8s; }
+    .o3 { width:320px; height:320px; background:rgba(74,222,128,.07);  top:40%; left:35%; animation-delay:-14s; }
+    .o4 { width:250px; height:250px; background:rgba(251,191,36,.06);  top:10%; right:20%; animation-delay:-19s; }
+    @keyframes orbFloat {
+        0%,100%{transform:translate(0,0) scale(1);}
+        33%    {transform:translate(35px,-35px) scale(1.07);}
+        66%    {transform:translate(-25px,22px) scale(.94);}
+    }
+
+    /* ── CONFETTI CANVAS ── */
+    #fx { position:fixed; inset:0; pointer-events:none; z-index:9999; display:none; }
+
+    /* ── LAYOUT ── */
+    .page {
+        position:relative; z-index:1;
+        max-width:900px; margin:0 auto;
+        padding:20px 20px 80px;
+        display:flex; flex-direction:column; gap:14px;
+    }
+    .glass {
+        background:var(--glass);
+        backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+        border:1px solid var(--glass-b); border-radius:var(--r);
+    }
+
+    /* ── HEADER ── */
+    .header { padding:18px 24px; display:flex; flex-direction:column; gap:14px; }
+    .brand  { display:flex; align-items:center; gap:10px; }
+    .brand-icon { font-size:28px; animation:iconBounce 3s ease-in-out infinite; }
+    @keyframes iconBounce {
+        0%,100%{transform:rotate(0deg) scale(1);}
+        25%    {transform:rotate(-8deg) scale(1.1);}
+        75%    {transform:rotate(8deg) scale(1.1);}
+    }
+    .brand-title {
+        font-size:20px; font-weight:900; letter-spacing:-.5px;
+        background:linear-gradient(90deg,#a5b4fc,#60a5fa,#818cf8);
+        -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    }
+    .brand-sub {
+        margin-left:auto; font-size:12px; font-weight:600; color:var(--muted);
+        border:1px solid var(--glass-b); padding:3px 12px; border-radius:99px;
+    }
+    .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+    .stat-pill {
+        background:rgba(255,255,255,.04); border:1px solid var(--glass-b);
+        border-radius:var(--r-sm); padding:10px 12px; text-align:center; transition:box-shadow .3s;
+    }
+    .stat-pill.patrimony { border-color:rgba(74,222,128,.35); background:rgba(74,222,128,.06); }
+    @keyframes statFlash {
+        0%  {box-shadow:0 0 22px rgba(129,140,248,.6);}
+        100%{box-shadow:none;}
+    }
+    .stat-pill.flash { animation:statFlash .7s ease-out; }
+    .stat-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--muted); }
+    .stat-val   { font-size:20px; font-weight:800; margin-top:2px; }
+    .stat-val.neg { color:var(--bad); }
+
+    /* delta float */
+    .delta-float {
+        position:fixed; pointer-events:none; z-index:9998;
+        font-family:'Poppins',sans-serif; font-weight:900; font-size:15px;
+        transform:translateX(-50%); animation:floatUp .9s cubic-bezier(.2,1,.4,1) forwards;
+    }
+    @keyframes floatUp {
+        0%  {opacity:1; transform:translateX(-50%) translateY(0);}
+        100%{opacity:0; transform:translateX(-50%) translateY(-52px);}
+    }
+
+    /* ── PROGRESS ── */
+    .progress-section { display:flex; flex-direction:column; gap:8px; }
+    .progress-meta { display:flex; justify-content:space-between; font-size:12px; font-weight:600; color:var(--muted); }
+    .dots-row { display:flex; justify-content:center; gap:8px; flex-wrap:wrap; }
+    .dot {
+        width:32px; height:32px; border-radius:50%;
+        display:flex; align-items:center; justify-content:center;
+        font-size:12px; font-weight:700; border:2px solid rgba(255,255,255,.12);
+        color:var(--muted); transition:all .35s cubic-bezier(.34,1.56,.64,1); flex-shrink:0;
+    }
+    .dot.done    { background:rgba(74,222,128,.18); border-color:rgba(74,222,128,.55); color:var(--good); font-size:14px; }
+    .dot.current { background:rgba(129,140,248,.25); border-color:var(--primary); color:white;
+                   transform:scale(1.18); animation:dotPulse 2.2s ease-in-out infinite; }
+    @keyframes dotPulse {
+        0%,100%{box-shadow:0 0 14px rgba(129,140,248,.45);}
+        50%    {box-shadow:0 0 28px rgba(129,140,248,.80);}
+    }
+    .bar-track { height:5px; background:rgba(255,255,255,.07); border-radius:99px; overflow:hidden; }
+    .bar-fill  { height:100%; border-radius:99px;
+                 background:linear-gradient(90deg,var(--primary),var(--decent));
+                 transition:width .7s cubic-bezier(.4,0,.2,1);
+                 box-shadow:0 0 10px rgba(129,140,248,.55); }
+
+    /* ── GAME CONTAINER transitions ── */
+    #game-container { padding:28px; }
+    #game-container.exit  { opacity:0; transform:translateX(-28px);
+                            transition:opacity .24s ease,transform .24s ease; }
+    #game-container.enter { animation:slideIn .38s cubic-bezier(.34,1.1,.64,1) forwards; }
+    @keyframes slideIn {
+        from{opacity:0; transform:translateX(28px);}
+        to  {opacity:1; transform:translateX(0);}
+    }
+
+    /* ── QUESTION SCREEN ── */
+    .theory-box {
+        background:rgba(96,165,250,.07); border:1px solid rgba(96,165,250,.18);
+        border-left:3px solid var(--decent); border-radius:0 var(--r-sm) var(--r-sm) 0;
+        padding:18px 20px; margin-bottom:18px; animation:fadeUp .4s ease both;
+    }
+    .theory-box h3 { font-size:14px; font-weight:700; color:var(--decent); margin-bottom:10px; }
+    .theory-box p  { font-size:14px; line-height:1.75; color:rgba(241,245,249,.82); }
+    .scenario-box {
+        background:rgba(251,191,36,.07); border:1px solid rgba(251,191,36,.22);
+        border-radius:var(--r-sm); padding:18px 20px; margin-bottom:22px;
+        font-size:16px; font-weight:600; line-height:1.55;
+        animation:fadeUp .4s .06s ease both;
+    }
+    .scenario-label { display:block; font-size:11px; font-weight:700; text-transform:uppercase;
+                      letter-spacing:1.5px; color:var(--risky); margin-bottom:8px; }
+    @keyframes fadeUp {
+        from{opacity:0; transform:translateY(12px);}
+        to  {opacity:1; transform:translateY(0);}
+    }
+    .options-label { font-size:11px; font-weight:700; text-transform:uppercase;
+                     letter-spacing:1.5px; color:var(--muted); margin-bottom:10px; }
+    .options-grid  { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .option-btn {
+        background:rgba(255,255,255,.04); border:1.5px solid rgba(255,255,255,.09);
+        border-radius:var(--r-sm); padding:18px 16px; font-family:inherit;
+        font-size:14.5px; color:var(--text); cursor:pointer; text-align:left;
+        display:flex; gap:12px; align-items:flex-start; line-height:1.55; will-change:transform;
+        transition:background .2s,border-color .2s,box-shadow .2s;
+        animation:optionIn .45s cubic-bezier(.34,1.4,.64,1) both;
+    }
+    .option-btn:nth-child(1){animation-delay:.10s;}
+    .option-btn:nth-child(2){animation-delay:.20s;}
+    .option-btn:nth-child(3){animation-delay:.30s;}
+    .option-btn:nth-child(4){animation-delay:.40s;}
+    @keyframes optionIn {
+        from{opacity:0; transform:translateY(18px) scale(.96);}
+        to  {opacity:1; transform:translateY(0) scale(1);}
+    }
+    .option-btn:not(:disabled):hover { background:rgba(255,255,255,.08);
+        border-color:rgba(255,255,255,.20); box-shadow:0 8px 32px rgba(0,0,0,.35); }
+    .option-btn:disabled { cursor:default; }
+    .option-btn.dimmed   { opacity:.28; filter:grayscale(.5); }
+    .option-btn.pulse-good { animation:pulseGood .65s cubic-bezier(.34,1.6,.64,1); }
+    .option-btn.shake      { animation:shake .55s ease; }
+    @keyframes pulseGood {
+        0%,100%{transform:scale(1);} 45%{transform:scale(1.05);}
+    }
+    @keyframes shake {
+        0%,100%{transform:translateX(0);}
+        15%,45%,75%{transform:translateX(-9px);}
+        30%,60%,90%{transform:translateX(9px);}
+    }
+    .badge {
+        min-width:28px; height:28px; border-radius:8px;
+        background:rgba(255,255,255,.11);
+        display:flex; align-items:center; justify-content:center;
+        font-size:13px; font-weight:800; flex-shrink:0; margin-top:1px;
+        transition:background .3s,color .3s;
+    }
+
+    /* ── NEXT / VER RESULTADO BUTTON ── */
+    .btn-next {
+        display:none; margin-top:18px; width:100%;
+        background:linear-gradient(135deg,#818cf8 0%,#60a5fa 100%);
+        color:white; border:none; padding:16px 24px; border-radius:var(--r-sm);
+        font-family:inherit; font-size:16px; font-weight:700; cursor:pointer;
+        box-shadow:0 8px 26px rgba(129,140,248,.40);
+        transition:transform .15s,box-shadow .15s;
+        animation:btnIn .4s cubic-bezier(.34,1.5,.64,1) forwards;
+    }
+    @keyframes btnIn {
+        from{opacity:0; transform:translateY(12px);}
+        to  {opacity:1; transform:translateY(0);}
+    }
+    .btn-next:hover  { transform:translateY(-3px); box-shadow:0 14px 36px rgba(129,140,248,.55); }
+    .btn-next:active { transform:translateY(0); }
+
+    /* chips */
+    .chips-row { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+    .chip { font-size:12px; font-weight:700; padding:4px 10px; border-radius:99px;
+            background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.10); }
+
+    /* ════════════════════════════════════
+       RESULT SCREEN
+    ════════════════════════════════════ */
+    .result-screen { display:flex; flex-direction:column; gap:16px; }
+
+    /* Quality hero card */
+    .rs-hero {
+        border-radius:var(--r); padding:36px 28px; text-align:center;
+        border:1px solid transparent; position:relative; overflow:hidden;
+        animation:heroDrop .6s cubic-bezier(.34,1.4,.64,1) both;
+    }
+    .rs-hero::after {
+        content:''; position:absolute; inset:0; pointer-events:none;
+        background:radial-gradient(ellipse at 50% 0%, rgba(255,255,255,.08) 0%, transparent 70%);
+    }
+    @keyframes heroDrop {
+        from{opacity:0; transform:translateY(-28px) scale(.88);}
+        to  {opacity:1; transform:translateY(0) scale(1);}
+    }
+
+    .rs-hero-icon {
+        font-size:72px; display:block; margin-bottom:16px;
+        animation:iconPop .7s cubic-bezier(.34,2,.64,1) .15s both;
+        filter:drop-shadow(0 0 24px currentColor);
+    }
+    @keyframes iconPop {
+        from{opacity:0; transform:scale(.1) rotate(-40deg);}
+        to  {opacity:1; transform:scale(1) rotate(0);}
+    }
+    .rs-hero-label { font-size:28px; font-weight:900; margin-bottom:6px; letter-spacing:-.5px; }
+    .rs-hero-sub   { font-size:14px; font-weight:500; opacity:.70; }
+
+    /* shimmer sweep on hero */
+    .rs-hero::before {
+        content:''; position:absolute; top:0; left:-100%; width:60%; height:100%;
+        background:linear-gradient(90deg,transparent,rgba(255,255,255,.07),transparent);
+        animation:shimmer 2.5s ease 0.8s 1 forwards;
+    }
+    @keyframes shimmer {
+        from{left:-100%;} to{left:200%;}
+    }
+
+    /* Sub-cards */
+    .rs-card {
+        background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);
+        border-radius:var(--r-sm); padding:20px 22px;
+    }
+    .rs-card.choice-card   { animation:fromLeft  .45s .18s cubic-bezier(.34,1.3,.64,1) both; }
+    .rs-card.impact-card   { animation:fromRight .45s .26s cubic-bezier(.34,1.3,.64,1) both; }
+    .rs-card.analysis-card { animation:fadeUp    .45s .34s ease both; border-left:3px solid transparent; }
+    @keyframes fromLeft  { from{opacity:0;transform:translateX(-22px);}to{opacity:1;transform:translateX(0);} }
+    @keyframes fromRight { from{opacity:0;transform:translateX(22px);}to{opacity:1;transform:translateX(0);} }
+
+    .rs-label {
+        font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px;
+        color:var(--muted); margin-bottom:10px; display:flex; align-items:center; gap:6px;
+    }
+    .choice-quote {
+        font-size:15px; font-style:italic; line-height:1.65;
+        color:rgba(241,245,249,.90);
+        border-left:2px solid rgba(255,255,255,.18); padding-left:14px; margin:0;
+    }
+
+    /* Patrimony change */
+    .patr-row {
+        display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+        margin-top:14px; padding-top:14px; border-top:1px solid rgba(255,255,255,.07);
+    }
+    .patr-label { font-size:12px; font-weight:600; color:var(--muted); margin-right:4px; }
+    .patr-before{ font-size:18px; font-weight:700; color:rgba(241,245,249,.45); text-decoration:line-through; }
+    .patr-arrow { font-size:20px; color:var(--muted); animation:arrowPop .4s .55s both;
+                  display:inline-block; }
+    @keyframes arrowPop {
+        from{opacity:0; transform:scale(0);} to{opacity:1; transform:scale(1);}
+    }
+    .patr-after { font-size:24px; font-weight:900; animation:afterCount .5s .6s both; }
+    @keyframes afterCount {
+        from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}
+    }
+    .patr-delta {
+        font-size:14px; font-weight:800; padding:4px 12px; border-radius:99px;
+        animation:deltaPop .45s .75s cubic-bezier(.34,1.8,.64,1) both;
+    }
+    @keyframes deltaPop {
+        from{opacity:0; transform:scale(0);} to{opacity:1; transform:scale(1);}
+    }
+
+    .analysis-text { font-size:15px; line-height:1.72; color:rgba(241,245,249,.88); }
+
+    /* ── END GAME ── */
+    .endgame { text-align:center; padding:24px 0;
+               animation:fadeUp .6s cubic-bezier(.34,1.2,.64,1) forwards; }
+    .end-emoji { font-size:80px; line-height:1; display:block; margin-bottom:18px;
+                 animation:emojiPop .7s cubic-bezier(.34,1.8,.64,1) .2s both; }
+    @keyframes emojiPop {
+        from{opacity:0; transform:scale(.3) rotate(-20deg);} to{opacity:1; transform:scale(1) rotate(0);}
+    }
+    .end-title     { font-size:28px; font-weight:900; margin-bottom:8px; }
+    .end-score     { font-size:42px; font-weight:900; margin-bottom:6px; letter-spacing:-1px; }
+    .end-breakdown { font-size:13px; color:var(--muted); margin-bottom:22px; }
+    .bar-breakdown { display:flex; height:10px; border-radius:99px; overflow:hidden;
+                     max-width:500px; margin:0 auto 26px; gap:3px; }
+    .bb-cash  { background:var(--decent); border-radius:99px; }
+    .bb-asset { background:var(--good);   border-radius:99px; }
+    .bb-liab  { background:var(--bad);    border-radius:99px; }
+    .end-msg   { font-size:16px; line-height:1.7; color:rgba(241,245,249,.78);
+                 max-width:520px; margin:0 auto 26px; }
+    .end-quote { font-style:italic; font-size:14px; color:var(--muted);
+                 max-width:480px; margin:0 auto 30px; padding:16px 22px;
+                 border:1px solid rgba(255,255,255,.08); border-radius:var(--r-sm); }
+    .btn-replay {
+        display:inline-flex; align-items:center; gap:8px;
+        background:var(--glass); border:1px solid var(--glass-b);
+        color:white; padding:14px 34px; border-radius:var(--r-sm);
+        font-family:inherit; font-size:16px; font-weight:700; cursor:pointer;
+        transition:background .2s,transform .15s;
+    }
+    .btn-replay:hover { background:rgba(255,255,255,.10); transform:translateY(-2px); }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:640px){
+        .options-grid{grid-template-columns:1fr;}
+        .stats-row{grid-template-columns:repeat(2,1fr);}
+        .dots-row{gap:5px;} .dot{width:27px;height:27px;font-size:11px;}
+        .end-score{font-size:30px;} #game-container{padding:18px;}
+        .brand-title{font-size:17px;} .rs-hero{padding:26px 18px;}
+        .rs-hero-icon{font-size:56px;} .rs-hero-label{font-size:22px;}
+    }
+    </style>
+</head>
+<body>
+
+<div class="bg">
+    <div class="orb o1"></div><div class="orb o2"></div>
+    <div class="orb o3"></div><div class="orb o4"></div>
+</div>
+<canvas id="fx"></canvas>
+
+<div class="page">
+    <!-- HEADER -->
+    <header class="glass header">
+        <div class="brand">
+            <span class="brand-icon">💸</span>
+            <span class="brand-title">Misión Patrimonio</span>
+            <span class="brand-sub">El Salón</span>
+        </div>
+        <div class="stats-row">
+            <div class="stat-pill" id="pill-cash">
+                <div class="stat-label">Efectivo</div>
+                <div class="stat-val">$<span id="ui-cash">2,000</span></div>
+            </div>
+            <div class="stat-pill" id="pill-assets">
+                <div class="stat-label">Activos</div>
+                <div class="stat-val">$<span id="ui-assets">0</span></div>
+            </div>
+            <div class="stat-pill" id="pill-liab">
+                <div class="stat-label">Pasivos</div>
+                <div class="stat-val neg">$<span id="ui-liab">0</span></div>
+            </div>
+            <div class="stat-pill patrimony" id="pill-patr">
+                <div class="stat-label">Patrimonio</div>
+                <div class="stat-val">$<span id="ui-patr">2,000</span></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- PROGRESS -->
+    <div class="progress-section">
+        <div class="progress-meta">
+            <span id="stage-label">Etapa 1 de 7</span>
+            <span id="stage-name">¿Qué es el dinero?</span>
+        </div>
+        <div class="dots-row" id="dots-row"></div>
+        <div class="bar-track"><div class="bar-fill" id="bar-fill" style="width:0%"></div></div>
+    </div>
+
+    <!-- GAME -->
+    <div class="glass" id="game-container"></div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════
+let cash = 2000, assets = 0, liabilities = 0;
+let stageIndex   = 0;
+let view         = 'question'; // 'question' | 'result'
+let lastSel      = null;       // { option, beforeCash, beforeAssets, beforeLibs }
+const TOTAL = 7;
+
+// Quality config — includes visual identity for the result screen
+const Q = {
+    good: {
+        color:'#4ade80', bg:'rgba(74,222,128,.10)', border:'rgba(74,222,128,.50)',
+        heroBg:'linear-gradient(135deg,rgba(74,222,128,.22) 0%,rgba(74,222,128,.06) 100%)',
+        heroBorder:'rgba(74,222,128,.40)',
+        icon:'🏆', label:'¡Excelente Decisión!', sub:'Tomaste la mejor opción disponible'
+    },
+    decent: {
+        color:'#60a5fa', bg:'rgba(96,165,250,.10)', border:'rgba(96,165,250,.50)',
+        heroBg:'linear-gradient(135deg,rgba(96,165,250,.22) 0%,rgba(96,165,250,.06) 100%)',
+        heroBorder:'rgba(96,165,250,.40)',
+        icon:'👍', label:'Decisión Acertada', sub:'Buena elección, aunque existe una mejor'
+    },
+    risky: {
+        color:'#fbbf24', bg:'rgba(251,191,36,.10)', border:'rgba(251,191,36,.50)',
+        heroBg:'linear-gradient(135deg,rgba(251,191,36,.18) 0%,rgba(251,191,36,.05) 100%)',
+        heroBorder:'rgba(251,191,36,.40)',
+        icon:'⚠️', label:'Decisión Arriesgada', sub:'Entendible, pero había opciones mejores'
+    },
+    bad: {
+        color:'#f87171', bg:'rgba(248,113,113,.10)', border:'rgba(248,113,113,.50)',
+        heroBg:'linear-gradient(135deg,rgba(248,113,113,.20) 0%,rgba(248,113,113,.05) 100%)',
+        heroBorder:'rgba(248,113,113,.40)',
+        icon:'💸', label:'Decisión Costosa', sub:'Esta elección daña el patrimonio'
+    },
+};
+
+// ══════════════════════════════════════════
+//  STAGES DATA
+// ══════════════════════════════════════════
+const stages = [
+    {
+        shortTitle:'¿Qué es el dinero?',
+        title:'Etapa 1: ¿Qué es el Dinero?',
+        theory:`El dinero cumple tres funciones: sirve para <strong>pagar cosas</strong> (medio de cambio), para <strong>medir cuánto valen</strong> las cosas (unidad de medida) y para <strong>guardar valor</strong> para el futuro (reserva de valor). Pero tiene un enemigo silencioso: la inflación. Cuando los precios suben rápido, cada día que los billetes pasan parados en un cajón compran menos cosas. En Venezuela este fenómeno es especialmente intenso, así que lo que se decide hacer con el dinero hoy tiene un impacto enorme en el mañana.`,
+        scenario:`El salón organizó una rifa y ganaron $1.000. Los precios están subiendo semana a semana. Tienen que decidir ahora mismo qué hacen con ese dinero. ¿Cuál es su movida?`,
+        options:[
+            {text:`Lo depositamos en la cuenta de ahorros del banco del salón. Así no lo gastamos y encima genera un poco de interés.`,
+             impact:{cash:1000,assets:0,liab:0},quality:'risky',
+             feedback:`❌ Suena prudente, pero hay un truco: si la inflación crece al 200% anual y el banco paga el 15% de interés, el número en pantalla sube... pero el dinero compra cada vez menos cosas. En hiperinflación, ahorrar en bolívares en el banco es como intentar llenar un balde con hueco en el fondo.`},
+            {text:`Lo usamos para comprar los materiales que el salón necesitará durante el año (resmas de papel, marcadores, cartuchos) mientras todavía están a este precio.`,
+             impact:{cash:0,assets:1000,liab:0},quality:'good',
+             feedback:`✅ ¡Movida perfecta! Convirtieron dinero (que pierde valor con el tiempo) en activos reales (que conservan su utilidad). Los marcadores siguen siendo marcadores aunque los precios sigan subiendo. Esta es la mejor defensa contra la inflación.`},
+            {text:`Dividimos: $500 los usamos para comprar materiales urgentes y los otros $500 los guardamos en dólares por si acaso.`,
+             impact:{cash:450,assets:500,liab:0},quality:'decent',
+             feedback:`⚠️ No está del todo mal: la mitad del capital se convirtió en activos reales y la otra mitad se protegió de la inflación del bolívar. Perdieron una pequeña comisión en el cambio. Es una decisión correcta a medias: prudente, pero no la más eficiente.`},
+            {text:`Un amigo de confianza del salón ofrece meter el dinero en una "inversión segura" que él mismo maneja y que da el 30% mensual.`,
+             impact:{cash:0,assets:400,liab:0},quality:'bad',
+             feedback:`❌ "30% mensual garantizado" es una señal de alarma clásica. Los mercados reales no garantizan rentabilidades así. Apostaron los $1.000 del salón y perdieron $600. En finanzas, si suena demasiado bueno para ser verdad, casi siempre lo es.`}
+        ]
+    },
+    {
+        shortTitle:'Activos y pasivos',
+        title:'Etapa 2: Activos, Pasivos y Patrimonio',
+        theory:`Un <strong>activo</strong> es algo que tiene valor económico o que genera ingresos (equipos, propiedades, negocios). Un <strong>pasivo</strong> es una deuda que hay que pagar. El <strong>patrimonio</strong> es la diferencia: Activos – Pasivos. Hay algo interesante en Venezuela: como el Estado controla las tasas de interés bancarias, endeudarse con el banco puede ser inteligente. Si la inflación es del 200% anual y el banco cobra solo el 20% de interés, la deuda en la práctica "se derrite" sola con el tiempo.`,
+        scenario:`El salón necesita un proyector para las presentaciones. Cuesta $800. Tienen el efectivo disponible en el fondo. ¿Cómo lo adquieren?`,
+        options:[
+            {text:`Pagamos de contado con todo el efectivo. Sin deudas, sin riesgos, sin preocupaciones.`,
+             impact:{cash:-800,assets:800,liab:0},quality:'decent',
+             feedback:`😐 El proyector es un activo real y eso está bien. Pero se quedaron sin liquidez: si mañana surge una emergencia, no tienen efectivo disponible. A veces endeudarse de forma inteligente es mejor que descapitalizarse completamente.`},
+            {text:`Lo financiamos con la tarjeta de crédito del banco (tasa fija) y conservamos el efectivo para lo que venga.`,
+             impact:{cash:0,assets:800,liab:350},quality:'good',
+             feedback:`✅ ¡Jugada maestra! Adquirieron un activo real, conservaron el efectivo para emergencias, y la deuda a tasa fija se irá "derritiendo" con la inflación. Así funciona la deuda inteligente: el banco cobra una tasa fija mientras la inflación devora el valor de lo que pagas.`},
+            {text:`Le pedimos prestado a un familiar de alguien del salón que dice que no nos cobrará intereses.`,
+             impact:{cash:0,assets:800,liab:800},quality:'risky',
+             feedback:`⚠️ Sin intereses suena bien, pero mezclar dinero con familia o amigos siempre pone en riesgo las relaciones. Además, esta deuda no se beneficia de la inflación como la bancaria: deberán devolver los $800 completos sin que la inflación los ayude.`},
+            {text:`Lo compramos a cuotas con un vendedor del barrio que cobra "solo un 10% mensualito, que es poquito".`,
+             impact:{cash:0,assets:800,liab:1500},quality:'bad',
+             feedback:`❌ "10% mensual" suena pequeño, pero en un año equivale a más del 200% de interés. Por un proyector de $800 podrían terminar pagando $1.500 o más. Los prestamistas informales no tienen regulación ni límite. Un activo de $800 que generó un pasivo de $1.500.`}
+        ]
+    },
+    {
+        shortTitle:'Proyecto de vida',
+        title:'Etapa 3: El Proyecto de Vida',
+        theory:`La planificación financiera comienza por saber a dónde quieres llegar. Las <strong>metas</strong> no son solo sueños: son compromisos con fechas y números concretos. Se dividen en corto plazo (semanas o meses), mediano plazo (1–2 años) y largo plazo (5+ años). Sin metas claras, el dinero siempre encuentra la forma de gastarse solo.`,
+        scenario:`Llegó el momento de decidir la gran meta financiera del salón para este año escolar. Cuatro propuestas están sobre la mesa. ¿Cuál eligen?`,
+        options:[
+            {text:`"Vamos a ahorrar todo lo que podamos este año y a fin de año decidimos qué hacemos con lo que juntamos."`,
+             impact:{cash:0,assets:0,liab:0},quality:'risky',
+             feedback:`⚠️ La intención es buena, pero una meta sin número, sin fecha y sin destino claro casi nunca se cumple. Sin un objetivo concreto, la motivación desaparece antes de los dos meses. Necesitan saber: ¿CUÁNTO? ¿PARA QUÉ? ¿CUÁNDO?`},
+            {text:`"Compramos las franelas de graduación ahora que están más baratas. En el futuro nos alegraremos de haber actuado rápido."`,
+             impact:{cash:-300,assets:100,liab:0},quality:'risky',
+             feedback:`⚠️ Pensar en la graduación tiene cierta lógica, pero gastar casi todo el capital en ropa (un bien de consumo que pierde valor) deja al salón sin recursos para el resto del año. Las franelas valdrán menos mañana; la flexibilidad financiera, no.`},
+            {text:`"Primero, un fondo de emergencias de $500 para antes de dos meses. Después, con lo que sobre, compramos materiales para un taller de diseño que puede generar ingresos."`,
+             impact:{cash:0,assets:500,liab:0},quality:'good',
+             feedback:`✅ ¡Eso es planificación real! Tienen fecha, monto, prioridad clara (seguridad primero, crecimiento después) y una visión productiva. Esta es la diferencia entre desear tener dinero y planificar para tenerlo.`},
+            {text:`"La directiva se lo merece: cada quien pide un préstamo personal y compramos los últimos iPhones. El salón los paga entre todos."`,
+             impact:{cash:0,assets:0,liab:1200},quality:'bad',
+             feedback:`❌ Endeudarse para comprar bienes de consumo que no generarán ningún ingreso futuro es la receta perfecta para la quiebra. Los celulares pierden el 30% de su valor el día que salen de la tienda. Las deudas, en cambio, no desaparecen solas.`}
+        ]
+    },
+    {
+        shortTitle:'El presupuesto',
+        title:'Etapa 4: El Presupuesto y los Gastos Hormiga',
+        theory:`El <strong>presupuesto</strong> es la herramienta que mide y clasifica todos los ingresos y gastos de un período. Una trampa clásica son los <strong>"gastos hormiga"</strong>: pequeños desembolsos que parecen insignificantes por separado (un café, un antojo, una descarga), pero que al sumarlos al final del mes se convierten en una fuga enorme de dinero. El presupuesto te ayuda a verlos antes de que causen daño.`,
+        scenario:`Al revisar las cuentas del último mes, descubren que están gastando $400 en dulces y meriendas en el recreo. Es un déficit importante. ¿Cómo lo resuelven?`,
+        options:[
+            {text:`Usamos la tarjeta de crédito del salón para cubrir lo que falta a fin de mes. Mientras tanto, seguimos igual.`,
+             impact:{cash:0,assets:0,liab:500},quality:'bad',
+             feedback:`❌ Financiar el consumo diario (meriendas, dulces) con deuda es la ruta más directa a la quiebra. Los intereses se acumulan mes a mes y el problema crece como una bola de nieve. Es como tapar un hueco cavando uno más grande justo al lado.`},
+            {text:`Queda totalmente prohibido que cualquier alumno compre algo en el recreo. Cero tolerancia, punto.`,
+             impact:{cash:50,assets:0,liab:0},quality:'risky',
+             feedback:`⚠️ Los presupuestos extremadamente rígidos casi siempre fracasan. La gente los rompe, se frustra y abandona el plan completo. Ahorraron un poco, pero a costo de tensión y desmotivación. Un buen presupuesto debe ser realista, no una penitencia.`},
+            {text:`Asignamos exactamente $200 al mes para meriendas en el presupuesto y todos se comprometen a respetarlo.`,
+             impact:{cash:300,assets:0,liab:0},quality:'good',
+             feedback:`✅ ¡Exactamente esto! Controlar no significa eliminar. Al ponerle un techo concreto al gasto hormiga y cumplirlo, generaron un superávit real sin hacerle miserable la vida a nadie. El presupuesto incluye el placer, solo que con límite.`},
+            {text:`Vendemos empanadas y jugos en el recreo para compensar lo que gastamos en meriendas.`,
+             impact:{cash:100,assets:0,liab:0},quality:'decent',
+             feedback:`⚠️ Generar ingresos extra es creativo, pero no resolvió el problema de raíz: el gasto excesivo sigue ahí. Si el negocio falla un mes, el déficit regresa exactamente igual. Los ingresos extra son un parche, no una solución sostenible.`}
+        ]
+    },
+    {
+        shortTitle:'Plan de acción',
+        title:'Etapa 5: El Plan de Acción',
+        theory:`El plan de acción transforma el presupuesto en una hoja de ruta hacia una meta. Para lograrlo hay dos caminos: <strong>reducir gastos</strong> o <strong>aumentar ingresos</strong> (idealmente ambos). Un principio clave: <em>págate a ti mismo primero</em>. Antes de gastar cualquier cosa, separa un porcentaje fijo para ahorro o inversión. Si esperas a ver "lo que sobra", nunca sobra nada.`,
+        scenario:`El presupuesto ya está bajo control. Ahora quieren que el dinero crezca. ¿Qué estrategia implementan este mes?`,
+        options:[
+            {text:`Cancelamos el servicio de internet del salón. Así ahorramos en gastos fijos sin sacrificar nada importante.`,
+             impact:{cash:100,assets:-300,liab:0},quality:'bad',
+             feedback:`❌ Cortaron un recurso necesario para el aprendizaje y la productividad del salón. El pequeño ahorro mensual no compensa la pérdida de valor educativo. No todos los gastos son iguales: algunos son inversiones disfrazadas de costo.`},
+            {text:`Compramos materiales al por mayor y los vendemos dentro del colegio con un margen de ganancia.`,
+             impact:{cash:200,assets:600,liab:0},quality:'good',
+             feedback:`✅ ¡Mentalidad de inversión! Usaron capital para crear un negocio que genera ingresos activos. El dinero no solo se conservó: trabajó y se multiplicó. Eso es exactamente lo que busca un plan de acción efectivo.`},
+            {text:`Guardamos todo el efectivo en dólares y prometemos no tocarlo por seis meses pase lo que pase.`,
+             impact:{cash:200,assets:0,liab:0},quality:'decent',
+             feedback:`⚠️ Proteger el efectivo de la inflación del bolívar cambiando a dólares es razonable. Pero ese dinero parado tampoco trabaja para nadie. En inflación alta, guardar cash sin invertirlo es correr en una cinta: te esfuerzas pero no avanzas.`},
+            {text:`Le pedimos a cada alumno del salón que aporte $20 extra este mes para "capitalizar" el fondo.`,
+             impact:{cash:100,assets:0,liab:0},quality:'risky',
+             feedback:`⚠️ Funciona si todos cooperan, pero depende completamente de la voluntad ajena. No desarrolla ninguna capacidad propia para generar ingresos y no es sostenible. El próximo mes, ¿qué hacen? ¿Piden otros $20?`}
+        ]
+    },
+    {
+        shortTitle:'Disciplina y ejecución',
+        title:'Etapa 6: La Puesta en Marcha',
+        theory:`Ejecutar un plan requiere disciplina y saber distinguir entre dos cosas muy distintas: una <strong>emergencia real</strong> (algo imprevisto que amenaza el bienestar, como una enfermedad o un daño grave) y un <strong>deseo urgente</strong> (algo que se quiere mucho en este momento pero que puede esperar o resolverse de otra manera). Confundirlos es uno de los errores más comunes que destruyen un plan financiero bien diseñado.`,
+        scenario:`Llevan un mes cumpliendo el plan al pie de la letra. De repente, anuncian el concierto del artista favorito del salón. Las entradas cuestan $500 y no están en el presupuesto. ¿Qué hacen?`,
+        options:[
+            {text:`Sacamos los $500 del fondo de emergencias. El concierto es una vez en la vida y la salud mental también importa.`,
+             impact:{cash:-500,assets:0,liab:0},quality:'bad',
+             feedback:`❌ Un concierto es un deseo, no una emergencia. El fondo existe para imprevistos que amenazan el bienestar real: una enfermedad, una reparación urgente. Usarlo aquí deja al salón completamente desprotegido si en las próximas semanas surge algo de verdad grave.`},
+            {text:`Organizamos una venta rápida de comida este fin de semana para generar los $500 específicamente para el concierto.`,
+             impact:{cash:0,assets:200,liab:0},quality:'good',
+             feedback:`✅ ¡Creatividad con disciplina! Generaron un ingreso extra para un gasto extra sin tocar el presupuesto ni el fondo de emergencias. El plan queda intacto y el salón igual va al concierto. Así se adapta un plan sin romperlo.`},
+            {text:`No vamos al concierto. El plan es el plan y no hay excepciones. Punto final.`,
+             impact:{cash:0,assets:0,liab:0},quality:'decent',
+             feedback:`⚠️ Protegieron el plan, lo cual tiene mérito real. Pero la planificación financiera tan inflexible que nunca deja espacio para el disfrute tampoco es sostenible a largo plazo. Aprendieron a resistir, pero no a adaptarse creativamente.`},
+            {text:`Cargamos las entradas a la tarjeta de crédito del salón. Son "solo" $500 y entre todos lo resolvemos mañana.`,
+             impact:{cash:0,assets:0,liab:620},quality:'bad',
+             feedback:`❌ "$500 y mañana lo resolvemos" es la frase con la que comienzan muchos problemas de deuda. $500 + intereses = $620 de pasivo para financiar entretenimiento. Así se construye, ladrillo a ladrillo, un hueco financiero serio.`}
+        ]
+    },
+    {
+        shortTitle:'Análisis y ajuste',
+        title:'Etapa 7: Análisis y Evaluación',
+        theory:`El último paso de la planificación financiera es evaluar si el plan funcionó y ajustarlo si es necesario. El entorno cambia, las circunstancias cambian, y el plan debe cambiar con ellos. Un plan que no se revisa periódicamente es un mapa de una ciudad que ya no existe. En Venezuela, donde la inflación puede cambiar drásticamente en semanas, esto es especialmente importante.`,
+        scenario:`Final del año escolar. La inflación subió mucho más de lo esperado: casi todo cuesta el doble de lo que costaba seis meses atrás. ¿Qué conclusión saca el salón?`,
+        options:[
+            {text:`"Con esta inflación es imposible planificar nada. Mejor gastar el dinero apenas llega antes de que valga menos."`,
+             impact:{cash:-1000,assets:0,liab:0},quality:'bad',
+             feedback:`❌ Este razonamiento es exactamente el que más daño hace. Gastar todo de forma impulsiva no protege de la inflación: solo garantiza quedarse sin nada más rápido. Es justo en contextos de alta inflación donde la planificación es más necesaria, no menos.`},
+            {text:`"Reducimos todos los gastos al mínimo posible durante los próximos meses para compensar el impacto."`,
+             impact:{cash:300,assets:0,liab:0},quality:'decent',
+             feedback:`⚠️ Recortar gastos es parte de una buena respuesta, pero si el efectivo ahorrado sigue perdiendo valor por la inflación, solo retrasan el problema. Sin convertir ese ahorro en activos reales, el patrimonio real sigue cayendo aunque los números suban en el papel.`},
+            {text:`"Ajustamos el plan: en vez de guardar efectivo, convertimos los ahorros en activos reales que no pierdan valor con la inflación (equipos, mercancía para revender)."`,
+             impact:{cash:-500,assets:1000,liab:0},quality:'good',
+             feedback:`✅ ¡Evaluación perfecta! Identificaron el problema (el efectivo pierde valor), corrigieron la estrategia (activos reales) y actuaron. La planificación financiera no es un contrato fijo: es un sistema vivo que debe ajustarse cuando la realidad cambia.`},
+            {text:`"El plan funcionó bien el año pasado. Lo dejamos exactamente igual para el año que viene."`,
+             impact:{cash:0,assets:0,liab:0},quality:'risky',
+             feedback:`⚠️ Evaluar sin ajustar no sirve de nada. Si el entorno cambió (la inflación se duplicó), el plan también debe cambiar. Seguir en piloto automático cuando la realidad ya es otra es un error que se paga con el patrimonio.`}
+        ]
+    }
+];
+
+// ══════════════════════════════════════════
+//  UTILITIES
+// ══════════════════════════════════════════
+let prevCash = 2000, prevAssets = 0, prevLibs = 0;
+
+function animateVal(el, from, to, ms=500) {
+    if (!el || from === to) return;
+    const t0 = performance.now();
+    const tick = now => {
+        const p  = Math.min((now-t0)/ms, 1);
+        const ep = 1 - Math.pow(1-p, 3);
+        el.innerText = Math.round(from + (to-from)*ep).toLocaleString();
+        if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+}
+
+function showDelta(pillId, delta) {
+    if (delta===0) return;
+    const pill = document.getElementById(pillId);
+    const rect = pill.getBoundingClientRect();
+    const div  = document.createElement('div');
+    div.className = 'delta-float';
+    div.style.cssText = `left:${rect.left+rect.width/2}px;top:${rect.top-4}px;color:${delta>0?'#4ade80':'#f87171'};`;
+    div.textContent = (delta>=0?'+':'')+delta.toLocaleString();
+    document.body.appendChild(div);
+    setTimeout(()=>div.remove(), 950);
+}
+
+function updateUI(impact) {
+    const nC=cash, nA=assets, nL=liabilities;
+    const nP=cash+assets-liabilities, oP=prevCash+prevAssets-prevLibs;
+    animateVal(document.getElementById('ui-cash'),   prevCash,   nC);
+    animateVal(document.getElementById('ui-assets'), prevAssets, nA);
+    animateVal(document.getElementById('ui-liab'),   prevLibs,   nL);
+    animateVal(document.getElementById('ui-patr'),   oP,         nP);
+    if (impact) {
+        if(impact.cash!==0)   showDelta('pill-cash',   impact.cash);
+        if(impact.assets!==0) showDelta('pill-assets', impact.assets);
+        if(impact.liab!==0)   showDelta('pill-liab',  -impact.liab);
+        const dp=impact.cash+impact.assets-impact.liab;
+        if(dp!==0) showDelta('pill-patr', dp);
+        ['pill-cash','pill-assets','pill-liab','pill-patr'].forEach(id=>{
+            const p=document.getElementById(id);
+            p.classList.remove('flash'); void p.offsetWidth;
+            p.classList.add('flash');
+            setTimeout(()=>p.classList.remove('flash'),700);
+        });
+    }
+    document.getElementById('pill-patr').style.borderColor =
+        nP>=oP ? 'rgba(74,222,128,.40)' : 'rgba(248,113,113,.40)';
+    prevCash=nC; prevAssets=nA; prevLibs=nL;
+}
+
+function updateProgress() {
+    const pct=(stageIndex/TOTAL)*100;
+    document.getElementById('bar-fill').style.width = pct+'%';
+    document.getElementById('stage-label').innerText = `Etapa ${stageIndex+1} de ${TOTAL}`;
+    document.getElementById('stage-name').innerText  = stages[stageIndex]?.shortTitle||'';
+    const row=document.getElementById('dots-row'); row.innerHTML='';
+    for(let i=0;i<TOTAL;i++){
+        const d=document.createElement('div');
+        d.className='dot'+(i<stageIndex?' done':i===stageIndex?' current':'');
+        d.textContent=i<stageIndex?'✓':i+1;
+        row.appendChild(d);
+    }
+}
+
+function addTiltEffect() {
+    document.querySelectorAll('.option-btn').forEach(btn=>{
+        btn.addEventListener('mousemove',e=>{
+            if(btn.disabled)return;
+            const r=btn.getBoundingClientRect();
+            const x=(e.clientX-r.left)/r.width-.5;
+            const y=(e.clientY-r.top)/r.height-.5;
+            btn.style.transform=`perspective(800px) rotateX(${-y*7}deg) rotateY(${x*7}deg) translateY(-3px)`;
+        });
+        btn.addEventListener('mouseleave',()=>{ if(!btn.disabled)btn.style.transform=''; });
+    });
+}
+
+function launchConfetti() {
+    const canvas=document.getElementById('fx');
+    canvas.style.display='block';
+    canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+    const ctx=canvas.getContext('2d');
+    const cols=['#4ade80','#818cf8','#fbbf24','#60a5fa','#f472b6','#34d399','#a78bfa'];
+    const ps=Array.from({length:140},()=>({
+        x:Math.random()*canvas.width, y:-15,
+        vx:(Math.random()-.5)*5, vy:Math.random()*5+2,
+        size:Math.random()*10+4, rot:Math.random()*360,
+        vr:(Math.random()-.5)*14,
+        color:cols[Math.floor(Math.random()*cols.length)],
+        shape:Math.random()>.4?'rect':'circle'
+    }));
+    let frame=0;
+    const draw=()=>{
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ps.forEach(p=>{
+            p.x+=p.vx; p.y+=p.vy; p.rot+=p.vr; p.vy+=.05;
+            ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180);
+            ctx.fillStyle=p.color; ctx.globalAlpha=Math.max(0,1-frame/110);
+            if(p.shape==='rect') ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*.55);
+            else{ctx.beginPath();ctx.arc(0,0,p.size/2,0,Math.PI*2);ctx.fill();}
+            ctx.restore();
+        });
+        if(++frame<130) requestAnimationFrame(draw);
+        else{ctx.clearRect(0,0,canvas.width,canvas.height); canvas.style.display='none';}
+    };
+    draw();
+}
+
+function transition(callback) {
+    const gc=document.getElementById('game-container');
+    gc.classList.add('exit');
+    setTimeout(()=>{
+        gc.classList.remove('exit');
+        callback();
+        gc.classList.add('enter');
+        setTimeout(()=>gc.classList.remove('enter'),420);
+    },270);
+}
+
+// ══════════════════════════════════════════
+//  RENDER: QUESTION SCREEN
+// ══════════════════════════════════════════
+function renderStage() {
+    if(stageIndex>=stages.length){renderEndGame();return;}
+    view='question'; lastSel=null;
+    updateProgress();
+    const stage=stages[stageIndex];
+    const letters=['A','B','C','D'];
+    const optsHTML=stage.options.map((opt,i)=>`
+        <button class="option-btn" onclick="selectOption(${i})">
+            <span class="badge">${letters[i]}</span>
+            <span>${opt.text}</span>
+        </button>`).join('');
+
+    document.getElementById('game-container').innerHTML=`
+        <div class="theory-box">
+            <h3>📚 ${stage.title}</h3>
+            <p>${stage.theory}</p>
+        </div>
+        <div class="scenario-box">
+            <span class="scenario-label">🤔 El dilema</span>
+            ${stage.scenario}
+        </div>
+        <div class="options-label">¿Qué decide el salón?</div>
+        <div class="options-grid" id="opts">${optsHTML}</div>
+        <button id="btn-next" class="btn-next" onclick="nextStage()" style="display:none;">
+            Ver resultado 🔍
+        </button>
+    `;
+    addTiltEffect();
+}
+
+// ══════════════════════════════════════════
+//  SELECT OPTION (sin feedback inline)
+// ══════════════════════════════════════════
+window.selectOption = function(idx) {
+    const option = stages[stageIndex].options[idx];
+    const q = Q[option.quality];
+
+    // Save "before" state
+    lastSel = {
+        option, idx,
+        beforeCash:   prevCash,
+        beforeAssets: prevAssets,
+        beforeLibs:   prevLibs,
+    };
+
+    // Apply impact & animate stats
+    cash        += option.impact.cash;
+    assets      += option.impact.assets;
+    liabilities += option.impact.liab;
+    updateUI(option.impact);
+
+    // Disable buttons + dim non-selected
+    document.querySelectorAll('.option-btn').forEach((btn,i)=>{
+        btn.disabled=true;
+        if(i!==idx){ btn.classList.add('dimmed'); btn.style.transform=''; }
+    });
+
+    // Highlight selected button
+    const sel=document.querySelectorAll('.option-btn')[idx];
+    sel.style.cssText+=`border-color:${q.color};border-width:2px;
+        background:${q.bg};box-shadow:0 0 26px ${q.border};`;
+    sel.querySelector('.badge').style.cssText=`background:${q.color};color:#000;`;
+
+    // Quick hint animation
+    if(option.quality==='good')     sel.classList.add('pulse-good');
+    else if(option.quality==='bad') sel.classList.add('shake');
+
+    // Show "Ver resultado" button
+    const btn=document.getElementById('btn-next');
+    btn.style.display='block';
+};
+
+// ══════════════════════════════════════════
+//  RENDER: RESULT SCREEN
+// ══════════════════════════════════════════
+function renderResult() {
+    view='result';
+    const { option, beforeCash, beforeAssets, beforeLibs } = lastSel;
+    const q          = Q[option.quality];
+    const beforePatr = beforeCash + beforeAssets - beforeLibs;
+    const afterPatr  = cash + assets - liabilities;
+    const deltaPatr  = afterPatr - beforePatr;
+    const fmt = n => (n>=0?'+':'')+n.toLocaleString();
+
+    // Impact chips
+    let chips='';
+    if(option.impact.cash!==0)
+        chips+=`<span class="chip" style="color:${option.impact.cash>0?'#4ade80':'#f87171'}">💵 Efectivo ${fmt(option.impact.cash)}</span>`;
+    if(option.impact.assets!==0)
+        chips+=`<span class="chip" style="color:${option.impact.assets>0?'#4ade80':'#f87171'}">🏗️ Activos ${fmt(option.impact.assets)}</span>`;
+    if(option.impact.liab!==0)
+        chips+=`<span class="chip" style="color:#f87171">📋 Pasivos +${option.impact.liab.toLocaleString()}</span>`;
+    if(!chips)
+        chips=`<span class="chip">Sin cambio inmediato en el balance</span>`;
+
+    const isLast = stageIndex === TOTAL-1;
+
+    document.getElementById('game-container').innerHTML=`
+        <div class="result-screen">
+
+            <!-- ① QUALITY HERO -->
+            <div class="rs-hero" style="background:${q.heroBg};border-color:${q.heroBorder};">
+                <span class="rs-hero-icon">${q.icon}</span>
+                <div class="rs-hero-label" style="color:${q.color};">${q.label}</div>
+                <div class="rs-hero-sub">${q.sub}</div>
+            </div>
+
+            <!-- ② CHOICE RECAP -->
+            <div class="rs-card choice-card">
+                <div class="rs-label">📝 Tu respuesta</div>
+                <blockquote class="choice-quote">${option.text}</blockquote>
+            </div>
+
+            <!-- ③ IMPACT -->
+            <div class="rs-card impact-card">
+                <div class="rs-label">📊 Impacto en el balance</div>
+                <div class="chips-row">${chips}</div>
+                <div class="patr-row">
+                    <span class="patr-label">Patrimonio</span>
+                    <span class="patr-before">$${beforePatr.toLocaleString()}</span>
+                    <span class="patr-arrow">→</span>
+                    <span class="patr-after" style="color:${q.color};" id="rs-after">$${afterPatr.toLocaleString()}</span>
+                    <span class="patr-delta" style="background:${deltaPatr>=0?'rgba(74,222,128,.15)':'rgba(248,113,113,.15)'};
+                        color:${deltaPatr>=0?'#4ade80':'#f87171'};
+                        border:1px solid ${deltaPatr>=0?'rgba(74,222,128,.3)':'rgba(248,113,113,.3)'};"
+                        id="rs-delta">${fmt(deltaPatr)}</span>
+                </div>
+            </div>
+
+            <!-- ④ ANALYSIS -->
+            <div class="rs-card analysis-card" style="border-left-color:${q.color};">
+                <div class="rs-label">💡 Análisis</div>
+                <p class="analysis-text">${option.feedback}</p>
+            </div>
+
+            <!-- ⑤ NEXT BUTTON -->
+            <button class="btn-next" style="display:block;" onclick="nextStage()">
+                ${isLast ? 'Ver resultado final 🏁' : 'Siguiente etapa ➡️'}
+            </button>
+        </div>
+    `;
+
+    // Confetti for top choice
+    if(option.quality==='good') launchConfetti();
+}
+
+// ══════════════════════════════════════════
+//  NAVIGATION
+// ══════════════════════════════════════════
+window.nextStage = function() {
+    if(view==='question'){
+        // Question → Result
+        transition(renderResult);
+    } else {
+        // Result → Next question or End
+        stageIndex++;
+        if(stageIndex>=TOTAL) transition(renderEndGame);
+        else transition(renderStage);
+    }
+    window.scrollTo({top:0,behavior:'smooth'});
+};
+
+// ══════════════════════════════════════════
+//  END GAME
+// ══════════════════════════════════════════
+function renderEndGame() {
+    const patrimony=cash+assets-liabilities;
+    let emoji,title,msg,color;
+    if      (patrimony>=4500){emoji='🏆';title='¡Gestores de Élite!';        color='#4ade80';msg='Tomaron las mejores decisiones en cada encrucijada. Su patrimonio creció de forma sólida y resistió la inflación. Eso es planificación financiera real.';}
+    else if (patrimony>=3000){emoji='👏';title='¡Buen Trabajo!';              color='#60a5fa';msg='Cometieron algunos errores, pero supieron recuperarse. El patrimonio creció por encima del punto de partida. Con más práctica serán excelentes planificadores.';}
+    else if (patrimony>=1500){emoji='⚠️';title='Sobrevivieron, pero justos.'; color='#fbbf24';msg='Se descapitalizaron en el camino. Revisen las decisiones donde el patrimonio cayó más: ahí está la lección más valiosa del juego.';}
+    else if (patrimony>0)    {emoji='😬';title='Por los pelos...';            color='#fb923c';msg='Quedaron con patrimonio positivo, pero apenas. Varias decisiones afectaron seriamente el capital. ¿Cuáles cambiarían si jugaran de nuevo?';}
+    else                     {emoji='💀';title='Bancarrota';                  color='#f87171';msg='Los pasivos superaron a los activos. Pero recuerden: el objetivo del juego es aprender de los errores ANTES de que ocurran en la vida real. ¿Qué cambiarían?';}
+
+    const tot=Math.max(cash+assets+liabilities,1);
+    const cp=Math.max(cash/tot*100,0), ap=Math.max(assets/tot*100,0), lp=Math.max(liabilities/tot*100,0);
+
+    document.getElementById('bar-fill').style.width='100%';
+    document.getElementById('stage-label').innerText='¡Completado! 🎓';
+    document.getElementById('stage-name').innerText='';
+    document.querySelectorAll('.dot').forEach(d=>{d.className='dot done';d.textContent='✓';});
+
+    document.getElementById('game-container').innerHTML=`
+        <div class="endgame">
+            <span class="end-emoji">${emoji}</span>
+            <h2 class="end-title" style="color:${color};">${title}</h2>
+            <div class="end-score" style="color:${color};">$${patrimony.toLocaleString()}</div>
+            <div class="end-breakdown">
+                Efectivo $${cash.toLocaleString()} + Activos $${assets.toLocaleString()} – Pasivos $${liabilities.toLocaleString()}
+            </div>
+            <div class="bar-breakdown">
+                ${cp>0?`<div class="bb-cash"  style="flex:${cp.toFixed(1)}"></div>`:''}
+                ${ap>0?`<div class="bb-asset" style="flex:${ap.toFixed(1)}"></div>`:''}
+                ${lp>0?`<div class="bb-liab"  style="flex:${lp.toFixed(1)}"></div>`:''}
+            </div>
+            <p class="end-msg">${msg}</p>
+            <div class="end-quote">
+                "El objetivo de las finanzas personales no es acumular dinero por acumular.
+                Es usar el dinero como herramienta para alcanzar el proyecto de vida que elegiste."
+            </div>
+            <button class="btn-replay" onclick="location.reload()">🔄 Jugar otra vez</button>
+        </div>
+    `;
+    if(patrimony>=4500) launchConfetti();
+}
+
+// ══════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════
+updateUI(null);
+updateProgress();
+renderStage();
+</script>
+</body>
+</html>
