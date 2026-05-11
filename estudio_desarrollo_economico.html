@@ -1,0 +1,2237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teoría y Políticas del Desarrollo Económico — Guía de Estudio</title>
+<style>
+  :root {
+    --s1: #6366f1; --s1l: #e0e7ff; --s1d: #4338ca;
+    --s2: #ec4899; --s2l: #fce7f3; --s2d: #be185d;
+    --s3: #10b981; --s3l: #d1fae5; --s3d: #065f46;
+    --s4: #f59e0b; --s4l: #fef3c7; --s4d: #b45309;
+    --s5: #ef4444; --s5l: #fee2e2; --s5d: #991b1b;
+    --bg: #f8fafc; --card: #ffffff; --text: #1e293b; --muted: #64748b;
+    --border: #e2e8f0; --radius: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+  header { background: linear-gradient(135deg, #1e293b 0%, #334155 100%); color: white; padding: 2rem; text-align: center; }
+  header h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.4rem; }
+  header p { color: #94a3b8; font-size: 0.95rem; }
+
+  /* TABS */
+  .tab-bar { display: flex; gap: 0; background: #1e293b; padding: 0 2rem; }
+  .tab-btn { padding: 1rem 2rem; font-size: 1rem; font-weight: 600; border: none; cursor: pointer; background: transparent; color: #94a3b8; border-bottom: 3px solid transparent; transition: all 0.2s; }
+  .tab-btn:hover { color: white; }
+  .tab-btn.active { color: white; border-bottom-color: #6366f1; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* TIMELINE */
+  .timeline { display: flex; align-items: center; padding: 1.5rem 2rem; background: white; border-bottom: 1px solid var(--border); overflow-x: auto; gap: 0; }
+  .tl-item { display: flex; align-items: center; flex-shrink: 0; }
+  .tl-node { display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+  .tl-circle { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; color: white; transition: transform 0.2s; flex-shrink: 0; }
+  .tl-circle:hover { transform: scale(1.15); }
+  .tl-label { font-size: 0.65rem; margin-top: 4px; font-weight: 600; text-align: center; width: 70px; color: var(--muted); }
+  .tl-arrow { font-size: 1.2rem; color: #cbd5e1; margin: 0 4px; padding-bottom: 18px; }
+  .tl-circle.s1 { background: var(--s1); }
+  .tl-circle.s2 { background: var(--s2); }
+  .tl-circle.s3 { background: var(--s3); }
+  .tl-circle.s4 { background: var(--s4); }
+  .tl-circle.s5 { background: var(--s5); }
+
+  /* EVOLUTION BANNER */
+  .evolution { background: linear-gradient(90deg, var(--s1l), var(--s2l), var(--s3l), var(--s4l), var(--s5l)); border-bottom: 1px solid var(--border); padding: 1rem 2rem; font-size: 0.85rem; color: var(--text); }
+  .evolution strong { color: #1e293b; }
+  .evo-chain { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 6px; }
+  .evo-tag { padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; color: white; }
+
+  /* MAIN LAYOUT */
+  .main { padding: 2rem; max-width: 1300px; margin: 0 auto; }
+
+  /* SECTION */
+  .section { margin-bottom: 3rem; }
+  .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 1.2rem; padding-bottom: 0.8rem; border-bottom: 3px solid; }
+  .section-num { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: white; font-size: 1rem; flex-shrink: 0; }
+  .section-title { font-size: 1.3rem; font-weight: 700; }
+  .section-sub { font-size: 0.85rem; color: var(--muted); margin-top: 2px; }
+
+  .s1-theme .section-header { border-color: var(--s1); }
+  .s1-theme .section-num { background: var(--s1); }
+  .s1-theme .section-title { color: var(--s1d); }
+  .s2-theme .section-header { border-color: var(--s2); }
+  .s2-theme .section-num { background: var(--s2); }
+  .s2-theme .section-title { color: var(--s2d); }
+  .s3-theme .section-header { border-color: var(--s3); }
+  .s3-theme .section-num { background: var(--s3); }
+  .s3-theme .section-title { color: var(--s3d); }
+  .s4-theme .section-header { border-color: var(--s4); }
+  .s4-theme .section-num { background: var(--s4); }
+  .s4-theme .section-title { color: var(--s4d); }
+  .s5-theme .section-header { border-color: var(--s5); }
+  .s5-theme .section-num { background: var(--s5); }
+  .s5-theme .section-title { color: var(--s5d); }
+
+  /* GRID */
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; }
+
+  /* CARD / PILDORA */
+  .card { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; transition: box-shadow 0.2s, transform 0.2s; }
+  .card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.1); transform: translateY(-2px); }
+  .card-header { padding: 0.9rem 1rem 0.7rem; display: flex; align-items: flex-start; gap: 10px; }
+  .card-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+  .card-meta { flex: 1; }
+  .card-author { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 2px; }
+  .card-concept { font-size: 1rem; font-weight: 700; color: var(--text); line-height: 1.3; }
+  .card-body { padding: 0 1rem 1rem; font-size: 0.85rem; color: #475569; }
+  .card-body p { margin-bottom: 0.5rem; }
+  .card-body ul { padding-left: 1.2rem; }
+  .card-body li { margin-bottom: 3px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; margin: 0 2px 4px 0; }
+  .tags { margin-top: 0.5rem; }
+
+  .s1-theme .card-author { color: var(--s1); }
+  .s1-theme .card-header { border-top: 3px solid var(--s1); }
+  .s2-theme .card-author { color: var(--s2); }
+  .s2-theme .card-header { border-top: 3px solid var(--s2); }
+  .s3-theme .card-author { color: var(--s3); }
+  .s3-theme .card-header { border-top: 3px solid var(--s3); }
+  .s4-theme .card-author { color: var(--s4); }
+  .s4-theme .card-header { border-top: 3px solid var(--s4); }
+  .s5-theme .card-author { color: var(--s5); }
+  .s5-theme .card-header { border-top: 3px solid var(--s5); }
+
+  .s1-theme .tag { background: var(--s1l); color: var(--s1d); }
+  .s2-theme .tag { background: var(--s2l); color: var(--s2d); }
+  .s3-theme .tag { background: var(--s3l); color: var(--s3d); }
+  .s4-theme .tag { background: var(--s4l); color: var(--s4d); }
+  .s5-theme .tag { background: var(--s5l); color: var(--s5d); }
+
+  /* EVOLUTION CONNECTOR */
+  .evo-connector { margin: 1rem 0; padding: 0.8rem 1rem; border-radius: 8px; font-size: 0.82rem; display: flex; align-items: flex-start; gap: 8px; }
+  .evo-connector .arrow { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+  .evo-connector.to-next { background: #f1f5f9; border-left: 4px solid #94a3b8; }
+
+  /* KEY QUOTE */
+  .key-quote { font-style: italic; background: #f8fafc; border-left: 3px solid currentColor; padding: 0.5rem 0.8rem; margin: 0.5rem 0; font-size: 0.82rem; border-radius: 0 6px 6px 0; }
+
+  /* WIDE CARD */
+  .card.wide { grid-column: 1 / -1; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  /* DIALOG */
+  .detail-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 1rem; }
+  .detail-modal.open { display: flex; }
+  .modal-box { background: white; border-radius: var(--radius); max-width: 700px; width: 100%; max-height: 90vh; overflow-y: auto; }
+  .modal-head { padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .modal-body { padding: 1.5rem; }
+  .modal-close { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--muted); }
+  .modal-close:hover { color: var(--text); }
+
+  /* SEARCH */
+  .search-bar { padding: 1rem 2rem; background: white; border-bottom: 1px solid var(--border); }
+  .search-bar input { width: 100%; max-width: 500px; padding: 0.6rem 1rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem; outline: none; }
+  .search-bar input:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99,102,241,0.1); }
+
+  /* SLIDE CARD */
+  .slide-card { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); padding: 1rem 1.2rem; }
+  .slide-card h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .slide-card ul { font-size: 0.82rem; color: #475569; padding-left: 1.2rem; }
+  .slide-card li { margin-bottom: 4px; }
+  .slide-card .slide-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+
+  /* NO SLIDES NOTE */
+  .no-slides { background: #f1f5f9; border-radius: var(--radius); padding: 2rem; text-align: center; color: var(--muted); font-size: 0.9rem; }
+
+  @media (max-width: 640px) {
+    .tab-btn { padding: 0.8rem 1rem; font-size: 0.85rem; }
+    .main { padding: 1rem; }
+    .two-col { grid-template-columns: 1fr; }
+    .cards-grid { grid-template-columns: 1fr; }
+  }
+
+  .hidden { display: none !important; }
+
+  /* DIALOGUE STRIP */
+  .dialogue-strip {
+    padding: 6px 1rem 5px;
+    display: flex; flex-wrap: wrap; gap: 5px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: #f8fafc;
+  }
+  .ds-badge {
+    display: inline-flex; align-items: center; gap: 3px;
+    padding: 2px 8px; border-radius: 20px;
+    font-size: 0.68rem; font-weight: 700; white-space: nowrap;
+    cursor: default;
+  }
+  .ds-refuta   { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+  .ds-extiende { background: #dbeafe; color: #1d4ed8; border: 1px solid #93c5fd; }
+  .ds-confirma { background: #d1fae5; color: #065f46; border: 1px solid #6ee7b7; }
+  .ds-matiza   { background: #fef9c3; color: #854d0e; border: 1px solid #fcd34d; }
+  .ds-sintetiza{ background: #ede9fe; color: #6d28d9; border: 1px solid #c4b5fd; }
+  .ds-recibido { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+
+  /* TAG POPOVER */
+  .tag { cursor: pointer; transition: opacity 0.15s, transform 0.15s; }
+  .tag:hover { opacity: 0.8; transform: scale(1.08); }
+  .tag-popover {
+    position: fixed; z-index: 9999;
+    background: #1e293b; color: white;
+    border-radius: 10px; padding: 0.9rem 1rem;
+    max-width: 280px; min-width: 200px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    font-size: 0.82rem; line-height: 1.5;
+    pointer-events: none;
+    opacity: 0; transform: translateY(6px) scale(0.97);
+    transition: opacity 0.18s, transform 0.18s;
+  }
+  .tag-popover.visible {
+    opacity: 1; transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+  .tag-popover-title {
+    font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+  .tag-popover-body { color: #cbd5e1; }
+  .tag-popover-body strong { color: white; }
+  .tag-popover-arrow {
+    position: absolute; bottom: -7px; left: 18px;
+    width: 14px; height: 7px; overflow: hidden;
+  }
+  .tag-popover-arrow::before {
+    content: ''; position: absolute;
+    width: 10px; height: 10px; background: #1e293b;
+    transform: rotate(45deg); top: -5px; left: 2px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Teoría y Políticas del Desarrollo Económico</h1>
+  <p>Guía de estudio · 6 semanas · Lecturas + Presentaciones</p>
+</header>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('lecturas')">📚 Lecturas</button>
+  <button class="tab-btn" onclick="switchTab('presentaciones')">📊 Presentaciones</button>
+</div>
+
+<!-- ===================== LECTURAS TAB ===================== -->
+<div id="tab-lecturas" class="tab-panel active">
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-node" onclick="scrollToSection('s1')">
+        <div class="tl-circle s1">S1</div>
+        <div class="tl-label">Concepción actual</div>
+      </div>
+    </div>
+    <div class="tl-arrow">→</div>
+    <div class="tl-item">
+      <div class="tl-node" onclick="scrollToSection('s2')">
+        <div class="tl-circle s2">S2</div>
+        <div class="tl-label">Raza</div>
+      </div>
+    </div>
+    <div class="tl-arrow">→</div>
+    <div class="tl-item">
+      <div class="tl-node" onclick="scrollToSection('s3')">
+        <div class="tl-circle s3">S3</div>
+        <div class="tl-label">Geografía</div>
+      </div>
+    </div>
+    <div class="tl-arrow">→</div>
+    <div class="tl-item">
+      <div class="tl-node" onclick="scrollToSection('s4')">
+        <div class="tl-circle s4">S4-5</div>
+        <div class="tl-label">Instituciones</div>
+      </div>
+    </div>
+    <div class="tl-arrow">→</div>
+    <div class="tl-item">
+      <div class="tl-node" onclick="scrollToSection('s5')">
+        <div class="tl-circle s5">S6</div>
+        <div class="tl-label">Cultura</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="evolution">
+    <strong>Hilo evolutivo del curso:</strong>
+    <div class="evo-chain">
+      <span class="evo-tag" style="background:var(--s1)">¿Qué es el desarrollo?</span>
+      <span>→</span>
+      <span class="evo-tag" style="background:var(--s2)">¿Es la raza? <em style="font-weight:400">(refutado)</em></span>
+      <span>→</span>
+      <span class="evo-tag" style="background:var(--s3)">¿Es la geografía? <em style="font-weight:400">(parcialmente)</em></span>
+      <span>→</span>
+      <span class="evo-tag" style="background:var(--s4)">La geografía actúa VÍA instituciones <em style="font-weight:400">(Easterly &amp; Levine)</em></span>
+      <span>→</span>
+      <span class="evo-tag" style="background:var(--s5)">La cultura importa, pero no es destino</span>
+    </div>
+  </div>
+
+  <div class="search-bar">
+    <input type="text" id="search-lecturas" placeholder="🔍 Buscar autor, concepto o teoría..." oninput="filterCards('lecturas')">
+  </div>
+
+  <div class="main">
+
+    <!-- ===== SEMANA 1 ===== -->
+    <div class="section s1-theme" id="s1">
+      <div class="section-header">
+        <div class="section-num">1</div>
+        <div>
+          <div class="section-title">Concepción y Situación Actual del Desarrollo</div>
+          <div class="section-sub">Semana 1 · ¿Qué entendemos por desarrollo? Más allá del PIB</div>
+        </div>
+      </div>
+
+      <div class="cards-grid">
+
+        <div class="card s1-theme">
+          <div class="card-header">
+            <div class="card-icon">🏛️</div>
+            <div class="card-meta">
+              <div class="card-author">Aristóteles (384–322 a.C.)</div>
+              <div class="card-concept">Eudaimonía: la vida buena como fin último</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <p>El <strong>télos</strong> (fin último) del ser humano es la <em>eudaimonía</em> (florecimiento/felicidad). El bien no es la acumulación de riqueza sino realizarse plenamente.</p>
+            <ul>
+              <li><strong>Ergon</strong>: función propia del ser humano → actividad del alma conforme a la virtud</li>
+              <li><strong>Phronesis</strong>: prudencia práctica, virtud intelectual que guía la acción moral</li>
+              <li><strong>Justo medio</strong>: la virtud está entre dos extremos viciosos (ej. valentía entre cobardía y temeridad)</li>
+              <li><strong>Amistades</strong>: de utilidad, de placer y de virtud (la más alta)</li>
+              <li><strong>Vida contemplativa</strong>: la más perfecta, la del filósofo</li>
+            </ul>
+            <div class="key-quote" style="color:var(--s1)">"Nos volvemos justos practicando actos justos."</div>
+            <div class="tags"><span class="tag">ética</span><span class="tag">bien humano</span><span class="tag">virtud</span></div>
+          </div>
+        </div>
+
+        <div class="card s1-theme">
+          <div class="card-header">
+            <div class="card-icon">📖</div>
+            <div class="card-meta">
+              <div class="card-author">David Brooks</div>
+              <div class="card-concept">Résumé vs. Eulogy Virtues</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <p>Distinción entre <strong>Adam I</strong> (el yo que construye currículo, logros, éxito externo) y <strong>Adam II</strong> (el yo que busca bondad, carácter, legado moral).</p>
+            <ul>
+              <li><em>Résumé virtues</em>: competencias para el mercado laboral</li>
+              <li><em>Eulogy virtues</em>: lo que dirán de ti en tu funeral (integridad, amor, fidelidad)</li>
+              <li>El carácter se construye como hábito mediante lucha moral constante</li>
+              <li><strong>Vocación</strong>: llamado externo que trasciende el interés personal</li>
+            </ul>
+            <div class="tags"><span class="tag">carácter</span><span class="tag">virtud</span><span class="tag">sentido de vida</span></div>
+          </div>
+        </div>
+
+        <div class="card s1-theme">
+          <div class="card-header">
+            <div class="card-icon">🌐</div>
+            <div class="card-meta">
+              <div class="card-author">Amartya Sen</div>
+              <div class="card-concept">Desarrollo como Libertad</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <p>El desarrollo es la <strong>expansión de las libertades reales</strong> que disfrutan los individuos. El ingreso es sólo un medio.</p>
+            <ul>
+              <li><strong>5 libertades instrumentales</strong>: libertades políticas, servicios económicos, oportunidades sociales, garantías de transparencia, seguridad protectora</li>
+              <li>Distinción: <em>agencia</em> (capacidad de actuar por metas propias) vs. <em>bienestar</em> (calidad de vida)</li>
+              <li>La democracia <em>previene hambrunas</em>: ningún país democrático ha sufrido hambruna grave (accountability política)</li>
+              <li>Las <strong>capacidades</strong> (capabilities) son lo que el individuo puede ser y hacer</li>
+            </ul>
+            <div class="key-quote" style="color:var(--s1)">"El crecimiento del PIB no es el fin del desarrollo, apenas un medio."</div>
+            <div class="tags"><span class="tag">capacidades</span><span class="tag">libertad</span><span class="tag">agencia</span></div>
+          </div>
+        </div>
+
+        <div class="card s1-theme">
+          <div class="card-header">
+            <div class="card-icon">💰</div>
+            <div class="card-meta">
+              <div class="card-author">Adam Smith</div>
+              <div class="card-concept">Simpatía, Espectador Imparcial y Justicia</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <p>En la <em>Teoría de los Sentimientos Morales</em>, Smith propone que la conducta moral surge de la <strong>simpatía</strong>: imaginamos cómo reaccionaría un observador imparcial ante nuestras acciones.</p>
+            <ul>
+              <li><strong>Espectador imparcial</strong>: juez interno que modera nuestros impulsos</li>
+              <li>La <strong>justicia</strong> es el pilar de la sociedad civil (sin ella, colapsa)</li>
+              <li>La <em>admiración por la riqueza</em> corrompe la moral pública: tendemos a admirar a los ricos y despreciar a los pobres aunque sean virtuosos</li>
+            </ul>
+            <div class="tags"><span class="tag">moral</span><span class="tag">justicia</span><span class="tag">sociedad</span></div>
+          </div>
+        </div>
+
+        <div class="card s1-theme">
+          <div class="card-header">
+            <div class="card-icon">🗳️</div>
+            <div class="card-meta">
+              <div class="card-author">Alexis de Tocqueville</div>
+              <div class="card-concept">Igualdad, Individualismo y Tiranía de la Mayoría</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <p>Análisis de la democracia americana como laboratorio de la igualdad moderna.</p>
+            <ul>
+              <li><strong>Igualdad de condiciones</strong>: principio generador de la democracia</li>
+              <li><strong>Individualismo</strong>: peligro democrático → retiro al círculo íntimo, abandono de lo público</li>
+              <li><strong>Tiranía de la mayoría</strong>: la opinión colectiva puede oprimir la disidencia</li>
+              <li><strong>Despotismo blando</strong>: gobierno tutela al individuo incapaz de valerse por sí mismo</li>
+              <li><strong>Asociaciones voluntarias</strong>: antídoto — ciudadanos que se unen por causas comunes fortalecen la democracia</li>
+            </ul>
+            <div class="tags"><span class="tag">democracia</span><span class="tag">libertad política</span><span class="tag">sociedad civil</span></div>
+          </div>
+        </div>
+
+        <div class="card s1-theme">
+          <div class="card-header">
+            <div class="card-icon">🧘</div>
+            <div class="card-meta">
+              <div class="card-author">Eckhart Tolle</div>
+              <div class="card-concept">Mente, Conciencia y Ego</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <p>El sufrimiento humano surge de la identificación con el <strong>ego</strong> (mente pensante) y con el <em>tiempo psicológico</em> (vivir en el pasado/futuro en lugar del presente).</p>
+            <ul>
+              <li><strong>Pain-body</strong>: campo de energía emocional acumulada que alimenta el sufrimiento</li>
+              <li>La conciencia (presencia) trasciende el pensamiento compulsivo</li>
+              <li>Relevancia para el desarrollo: bienestar subjetivo profundo ≠ logros materiales</li>
+            </ul>
+            <div class="tags"><span class="tag">bienestar</span><span class="tag">psicología</span><span class="tag">conciencia</span></div>
+          </div>
+        </div>
+
+        <div class="card s1-theme">
+          <div class="card-header">
+            <div class="card-icon">😊</div>
+            <div class="card-meta">
+              <div class="card-author">Helliwell, Layard et al. — World Happiness Report 2025</div>
+              <div class="card-concept">Medición Global de la Felicidad</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <p>Los países nórdicos (Finlandia, Dinamarca, etc.) lideran consistentemente. Los 6 factores explicativos:</p>
+            <ul>
+              <li>PIB per cápita, apoyo social, esperanza de vida saludable</li>
+              <li>Libertad de elección, generosidad, ausencia de corrupción</li>
+              <li><strong>Paradoja de Easterlin</strong>: más ingreso no genera más felicidad a largo plazo</li>
+              <li><em>Loneliness</em> equivale a fumar 15 cigarrillos/día (efecto en salud)</li>
+              <li><strong>Generosidad "twice-blessed"</strong>: dar beneficia tanto al donante como al receptor</li>
+            </ul>
+            <div class="tags"><span class="tag">felicidad</span><span class="tag">capital social</span><span class="tag">soledad</span></div>
+          </div>
+        </div>
+
+        <div class="card s1-theme">
+          <div class="card-header">
+            <div class="card-icon">📊</div>
+            <div class="card-meta">
+              <div class="card-author">UNDP — Conceição (Informe de Desarrollo Humano)</div>
+              <div class="card-concept">Gridlock, Polarización e IDH Post-pandemia</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <p>El mundo enfrenta un <em>gridlock</em> (bloqueo) en cooperación global.</p>
+            <ul>
+              <li><strong>Polarización percibida > polarización real</strong>: creemos que los otros están más alejados de lo que están</li>
+              <li>IDH post-pandemia: divergencia creciente entre países ricos y pobres</li>
+              <li><strong>IA</strong>: puede ser ecualizador (acceso a conocimiento) o amplificador de desigualdades según quién la controle</li>
+              <li>Crisis de multilateralismo cuando más se necesita cooperación</li>
+            </ul>
+            <div class="tags"><span class="tag">IDH</span><span class="tag">polarización</span><span class="tag">IA</span><span class="tag">multilateralismo</span></div>
+          </div>
+        </div>
+
+        <div class="card s1-theme">
+          <div class="card-header">
+            <div class="card-icon">🌟</div>
+            <div class="card-meta">
+              <div class="card-author">Wallis &amp; Seligman — Psicología Positiva</div>
+              <div class="card-concept">Bienestar, Flow y el Pastel de la Felicidad</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <p>La psicología positiva estudia qué hace que la vida valga la pena, no sólo qué la enferma.</p>
+            <ul>
+              <li><strong>Flow</strong> (Csikszentmihalyi): estado de concentración óptima donde el tiempo desaparece → máximo rendimiento y satisfacción</li>
+              <li><strong>Pastel de la felicidad</strong> (Lyubomirsky): 50% genes, 10% circunstancias, <em>40% actividades intencionales</em> (lo que podemos controlar)</li>
+              <li><strong>Relaciones sociales</strong>: predictor #1 de bienestar subjetivo a largo plazo (Estudio Harvard de 80 años)</li>
+              <li>PERMA: Positive emotions, Engagement, Relationships, Meaning, Achievement</li>
+            </ul>
+            <div class="tags"><span class="tag">psicología positiva</span><span class="tag">flow</span><span class="tag">relaciones sociales</span></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="evo-connector to-next">
+        <span class="arrow">↓</span>
+        <span>Establecido que el desarrollo va más allá del PIB, el curso pregunta: ¿por qué algunos países son más ricos que otros? La primera hipótesis histórica (y la más controvertida): <strong>la raza</strong>. La Semana 2 la examina y la desmonta críticamente.</span>
+      </div>
+    </div>
+
+    <!-- ===== SEMANA 2 ===== -->
+    <div class="section s2-theme" id="s2">
+      <div class="section-header">
+        <div class="section-num">2</div>
+        <div>
+          <div class="section-title">Raza y Desarrollo</div>
+          <div class="section-sub">Semana 2 · ¿Es la raza una explicación del subdesarrollo? Veredicto: NO</div>
+        </div>
+      </div>
+
+      <div class="cards-grid">
+
+        <div class="card s2-theme">
+          <div class="card-header">
+            <div class="card-icon">⚠️</div>
+            <div class="card-meta">
+              <div class="card-author">Herrnstein &amp; Murray — The Bell Curve (1994)</div>
+              <div class="card-concept">IQ como factor único de estratificación social</div>
+            </div>
+          </div>
+          <div class="dialogue-strip">
+            <span class="ds-recibido">⬇ Refutado por: Heckman (econometría)</span>
+            <span class="ds-recibido">⬇ Refutado por: Massey (sociología)</span>
+            <span class="ds-recibido">⬇ Refutado por: ONU (1978) · Efecto Flynn</span>
+          </div>
+          <div class="card-body">
+            <p>Tesis polémica: la inteligencia general (<strong>factor g</strong>) es el principal predictor del éxito social, y existen diferencias raciales sistemáticas en IQ.</p>
+            <ul>
+              <li>Argumentan que la <em>estratificación cognitiva</em> explica la desigualdad social mejor que la raza per se</li>
+              <li>Cuestionan la <strong>acción afirmativa</strong>: si el IQ es el factor, las políticas de cuotas son ineficaces</li>
+              <li>Sugieren que las diferencias de IQ entre grupos raciales tienen componente genético</li>
+            </ul>
+            <div class="key-quote" style="color:var(--s2)">"La sociedad cognitiva estratificada es el mayor desafío de las democracias liberales."</div>
+            <div class="tags"><span class="tag">IQ</span><span class="tag">raza</span><span class="tag">polémica</span><span class="tag">REFUTADO</span></div>
+          </div>
+        </div>
+
+        <div class="card s2-theme">
+          <div class="card-header">
+            <div class="card-icon">🔬</div>
+            <div class="card-meta">
+              <div class="card-author">James Heckman (Premio Nobel 2000)</div>
+              <div class="card-concept">Crítica econométrica a The Bell Curve</div>
+            </div>
+          </div>
+          <div class="dialogue-strip">
+            <span class="ds-refuta">⚡ Responde directamente a: Herrnstein &amp; Murray (1994)</span>
+          </div>
+          <div class="card-body">
+            <p>Heckman desmonta la metodología de Herrnstein &amp; Murray con rigor estadístico.</p>
+            <ul>
+              <li>El <strong>AFQT</strong> (test usado como proxy de IQ) ≠ factor g; mide habilidades aprendidas, no inteligencia innata</li>
+              <li>El IQ explica <em>menos del 22% de la varianza</em> en salarios (R² bajo)</li>
+              <li>Las <strong>intervenciones tempranas</strong> en la infancia (Perry Preschool, Abecedarian) elevan efectivamente el IQ y el desempeño vital → refuta la inmutabilidad</li>
+              <li><strong>Efecto Flynn</strong>: el IQ promedio ha subido ~3 puntos por década en el siglo XX → si fuera genético, no podría subir tan rápido; es ambiental</li>
+            </ul>
+            <div class="tags"><span class="tag">econometría</span><span class="tag">efecto Flynn</span><span class="tag">intervención temprana</span></div>
+          </div>
+        </div>
+
+        <div class="card s2-theme">
+          <div class="card-header">
+            <div class="card-icon">📐</div>
+            <div class="card-meta">
+              <div class="card-author">Douglas Massey</div>
+              <div class="card-concept">Errores metodológicos de The Bell Curve</div>
+            </div>
+          </div>
+          <div class="dialogue-strip">
+            <span class="ds-refuta">⚡ Responde directamente a: Herrnstein &amp; Murray (1994)</span>
+            <span class="ds-extiende">→ Complementa: crítica de Heckman desde la sociología</span>
+          </div>
+          <div class="card-body">
+            <p>Massey señala que Bell Curve es <strong>sociología defectuosa</strong>, no sólo conclusiones políticamente incómodas.</p>
+            <ul>
+              <li><em>Variable timing problem</em>: el IQ se mide después de las condiciones socioeconómicas, que ya lo habrían afectado</li>
+              <li><em>Variables omitidas</em>: no controlan por segregación residencial, calidad escolar, estrés crónico, exposición a plomo, etc.</li>
+              <li>El IQ debe ser tratado como variable <strong>endógena</strong> (causada por condiciones sociales), no exógena</li>
+              <li>Pregunta fundamental de la sociología: ¿cómo la posición social moldea las capacidades individuales?</li>
+            </ul>
+            <div class="tags"><span class="tag">metodología</span><span class="tag">variables omitidas</span><span class="tag">sociología</span></div>
+          </div>
+        </div>
+
+        <div class="card s2-theme">
+          <div class="card-header">
+            <div class="card-icon">📜</div>
+            <div class="card-meta">
+              <div class="card-author">Anthony Pagden</div>
+              <div class="card-concept">El bárbaro: historia de la construcción de la otredad</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <p>Historia intelectual de cómo Occidente construyó al "otro" como inferior para justificar la dominación.</p>
+            <ul>
+              <li><strong>Bárbaro</strong> (griego antiguo): quien no habla griego → no pertenece a la polis → puede ser esclavo</li>
+              <li><strong>Esclavitud natural aristotélica</strong>: algunos hombres nacen para obedecer; los conquistadores la aplicaron a los indígenas americanos</li>
+              <li><strong>Francisco de Vitoria / Escuela de Salamanca</strong>: primer cuestionamiento sistemático de la legitimidad de la conquista (s. XVI) — los indígenas tienen derechos naturales</li>
+              <li><em>Ethismos</em> (Pagden): reformulación — diferencias culturales (no raciales) que igual justifican tutela europea</li>
+            </ul>
+            <div class="tags"><span class="tag">colonialismo</span><span class="tag">otredad</span><span class="tag">esclavitud</span><span class="tag">Vitoria</span></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="evo-connector to-next">
+        <span class="arrow">↓</span>
+        <span>La raza no es determinante del desarrollo (el IQ es maleable y ambiental). Pero el debate persiste: ¿qué factores estructurales sí importan? La Semana 3 propone <strong>la geografía</strong> como candidata — el argumento es más sofisticado y cuenta con evidencia empírica sólida.</span>
+      </div>
+    </div>
+
+    <!-- ===== SEMANA 3 ===== -->
+    <div class="section s3-theme" id="s3">
+      <div class="section-header">
+        <div class="section-num">3</div>
+        <div>
+          <div class="section-title">Geografía y Desarrollo</div>
+          <div class="section-sub">Semana 3 · El entorno físico como condicionante del desarrollo</div>
+        </div>
+      </div>
+
+      <div class="cards-grid">
+
+        <div class="card s3-theme">
+          <div class="card-header">
+            <div class="card-icon">🌍</div>
+            <div class="card-meta">
+              <div class="card-author">Jared Diamond — Armas, Gérmenes y Acero (1997)</div>
+              <div class="card-concept">Por qué Pizarro capturó a Atahualpa y no al revés</div>
+            </div>
+          </div>
+          <div class="dialogue-strip">
+            <span class="ds-refuta">⚡ Refuta: determinismo racial (Bell Curve et al.) — la causa es geográfica, no biológica</span>
+            <span class="ds-recibido">⬇ Profundizado por: Sachs (mecanismos tropicales actuales)</span>
+            <span class="ds-recibido">⬇ Matizado por: Easterly &amp; Levine (geografía actúa VÍA instituciones)</span>
+          </div>
+          <div class="card-body">
+            <p>Cajamarca, 1532: 168 españoles capturan al emperor inca con 80,000 hombres. ¿Por qué?</p>
+            <ul>
+              <li><strong>Causas próximas</strong>: armas de acero, caballos, organización militar, escritura</li>
+              <li><strong>Causas últimas</strong>: disponibilidad de plantas domesticables (gramíneas) y animales domesticables en el eje este-oeste de Eurasia</li>
+              <li>La <strong>producción de alimentos</strong> es el eslabón fundamental: genera excedente → especialización → Estados → ejércitos → gérmenes (inmunidad) → escritura → tecnología</li>
+              <li><em>Eje este-oeste de Eurasia</em>: permite difusión de cultivos y tecnologías (mismo clima) vs. eje norte-sur de América (barreras climáticas)</li>
+              <li><strong>Ley de dominancia cultural</strong>: las sociedades con ventaja tecnológica reemplazan a las demás</li>
+            </ul>
+            <div class="key-quote" style="color:var(--s3)">"La historia sigue cursos diferentes para distintos pueblos debido a diferencias en sus entornos, no en sus capacidades biológicas."</div>
+            <div class="tags"><span class="tag">geografía</span><span class="tag">domesticación</span><span class="tag">causalidad última</span><span class="tag">refuta racismo</span></div>
+          </div>
+        </div>
+
+        <div class="card s3-theme">
+          <div class="card-header">
+            <div class="card-icon">💡</div>
+            <div class="card-meta">
+              <div class="card-author">Henderson, Storeygard &amp; Weil</div>
+              <div class="card-concept">Luces nocturnas como proxy del PIB</div>
+            </div>
+          </div>
+          <div class="dialogue-strip">
+            <span class="ds-confirma">✓ Complementa: Diamond y Sachs con evidencia satelital contemporánea</span>
+          </div>
+          <div class="card-body">
+            <p>Usan imágenes satelitales de luminosidad nocturna para medir actividad económica donde faltan datos.</p>
+            <ul>
+              <li><strong>24 variables geográficas</strong> explican el 47% de la variación mundial en ingreso</li>
+              <li><em>Paradoja early vs. late developers</em>: países que urbanizaron temprano (Europa) tienen configuración geográfica diferente a los tardíos (África) — la geografía fijó quién llegó primero</li>
+              <li><strong>Persistencia de ciudades</strong>: las ciudades se mantienen donde históricamente surgieron aunque el factor inicial (ej. río navegable) haya perdido importancia</li>
+              <li>Los <strong>costos de transporte</strong> explican parte de la persistencia de la pobreza urbana en el Sur Global</li>
+            </ul>
+            <div class="tags"><span class="tag">urbanización</span><span class="tag">datos satelitales</span><span class="tag">persistencia</span></div>
+          </div>
+        </div>
+
+        <div class="card s3-theme">
+          <div class="card-header">
+            <div class="card-icon">🌡️</div>
+            <div class="card-meta">
+              <div class="card-author">Jeffrey Sachs</div>
+              <div class="card-concept">Geografía tropical y trampas de pobreza</div>
+            </div>
+          </div>
+          <div class="dialogue-strip">
+            <span class="ds-extiende">→ Profundiza mecanismos de: Diamond (causas últimas → trampas actuales)</span>
+            <span class="ds-recibido">⬇ Refutado (efecto directo) por: Easterly &amp; Levine — geografía actúa solo vía instituciones</span>
+          </div>
+          <div class="card-body">
+            <p>La correlación entre <em>ecología</em> e ingreso es la más robusta en la literatura de desarrollo.</p>
+            <ul>
+              <li>Zonas <strong>templadas</strong> tienen en promedio 4.5× el ingreso de zonas tropicales</li>
+              <li><strong>5 mecanismos causales</strong> propuestos: (1) productividad agrícola, (2) enfermedades (malaria requiere T>18°C), (3) tecnologías ecológico-específicas, (4) costos de transporte, (5) acceso a agua potable</li>
+              <li>Las tecnologías de la Revolución Industrial fueron diseñadas para climas templados → no funcionan igual en el trópico</li>
+              <li><strong>Solución</strong>: inversión pública masiva en I+D tropical (no transferible del Norte)</li>
+            </ul>
+            <div class="key-quote" style="color:var(--s3)">"La geografía no es destino, pero sí es punto de partida — y algunos puntos de partida son brutalmente difíciles."</div>
+            <div class="tags"><span class="tag">trópico</span><span class="tag">malaria</span><span class="tag">tecnología ecológica</span><span class="tag">trampa de pobreza</span></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="evo-connector to-next">
+        <span class="arrow">↓</span>
+        <span>La geografía explica mucho, pero no todo. El gran debate de la literatura: ¿actúa la geografía <em>directamente</em> o a través de las <strong>instituciones</strong> que generó? Easterly &amp; Levine (Semanas 4-5) argumentarán que la geografía importa <em>sólo</em> vía instituciones — el efecto directo desaparece al controlar por éstas.</span>
+      </div>
+    </div>
+
+    <!-- ===== SEMANAS 4 Y 5 ===== -->
+    <div class="section s4-theme" id="s4">
+      <div class="section-header">
+        <div class="section-num">4-5</div>
+        <div>
+          <div class="section-title">Instituciones y Desarrollo</div>
+          <div class="section-sub">Semanas 4–5 · Las reglas del juego como clave del desarrollo</div>
+        </div>
+      </div>
+
+      <div class="cards-grid">
+
+        <div class="card s4-theme">
+          <div class="card-header">
+            <div class="card-icon">🏗️</div>
+            <div class="card-meta">
+              <div class="card-author">Douglass North — Nobel 1993 (Instituciones 1)</div>
+              <div class="card-concept">Instituciones: las reglas del juego</div>
+            </div>
+          </div>
+          <div class="dialogue-strip">
+            <span class="ds-recibido">⬇ Extendido por él mismo: North (2005) — añade modelos mentales y cultura</span>
+            <span class="ds-recibido">⬇ Aplicado por: NSW (orden político) · Engerman-Sokoloff (historia colonial)</span>
+            <span class="ds-recibido">⬇ Confirmado empíricamente por: Easterly &amp; Levine</span>
+          </div>
+          <div class="card-body">
+            <p>Las <strong>instituciones</strong> son las reglas del juego en una sociedad — las restricciones creadas por los humanos que estructuran la interacción.</p>
+            <ul>
+              <li>Tres componentes: <em>reglas formales</em> (leyes, constituciones), <em>reglas informales</em> (normas, tabúes, convenciones), <em>mecanismos de aplicación</em> (enforcement)</li>
+              <li><strong>Path dependence</strong>: el cambio institucional es incremental y dependiente del sendero histórico</li>
+              <li>Las <strong>organizaciones</strong> (empresas, sindicatos, partidos) son los agentes del cambio, distintas de las instituciones (las reglas)</li>
+              <li><em>Privatización no es panacea</em>: sin marco institucional, el mercado no funciona solo</li>
+              <li><strong>Eficiencia adaptativa</strong> (capacidad de cambiar las reglas) > eficiencia asignativa</li>
+            </ul>
+            <div class="tags"><span class="tag">reglas formales</span><span class="tag">path dependence</span><span class="tag">enforcement</span></div>
+          </div>
+        </div>
+
+        <div class="card s4-theme">
+          <div class="card-header">
+            <div class="card-icon">🧠</div>
+            <div class="card-meta">
+              <div class="card-author">Douglass North — Understanding the Process of Economic Change (2005)</div>
+              <div class="card-concept">Modelos mentales, creencias y mundo no-ergódico</div>
+            </div>
+          </div>
+          <div class="dialogue-strip">
+            <span class="ds-extiende">→ Extensión propia de: North (1993) — incorpora cognición y creencias</span>
+            <span class="ds-extiende">→ Puente hacia Semana 6: cultura = aprendizaje intergeneracional de creencias</span>
+          </div>
+          <div class="card-body">
+            <p>Extensión de la teoría: las instituciones son construidas sobre <strong>modelos mentales</strong> (creencias compartidas).</p>
+            <ul>
+              <li>El mundo es <strong>no-ergódico</strong>: el futuro no es una repetición probabilística del pasado; el cambio es genuino y no puede predecirse con modelos de equilibrio</li>
+              <li><em>Estructura artefactual</em>: todo lo construido por humanos (instituciones, tecnología, ideología) forma parte del entorno</li>
+              <li>Creencias incorrectas → instituciones disfuncionales → fracaso económico (caso URSS)</li>
+              <li><strong>Aprendizaje intergeneracional = cultura</strong>: la herencia de creencias y valores es la fuente de persistencia institucional</li>
+            </ul>
+            <div class="tags"><span class="tag">creencias</span><span class="tag">modelos mentales</span><span class="tag">no-ergódico</span><span class="tag">cultura</span></div>
+          </div>
+        </div>
+
+        <div class="card s4-theme">
+          <div class="card-header">
+            <div class="card-icon">⚖️</div>
+            <div class="card-meta">
+              <div class="card-author">North, Summerhill &amp; Weingast (NSW 1999)</div>
+              <div class="card-concept">Orden político como bien público y compromisos creíbles</div>
+            </div>
+          </div>
+          <div class="dialogue-strip">
+            <span class="ds-extiende">→ Aplica framework de: North (1993) al problema del orden político</span>
+            <span class="ds-extiende">→ Explica por qué A. Latina hereda instituciones personalistas de la colonia</span>
+          </div>
+          <div class="card-body">
+            <p>El orden político (paz, estabilidad, derechos) es un <strong>bien público</strong> que el mercado no puede proveer por sí solo.</p>
+            <ul>
+              <li><em>Compromisos creíbles</em> (credible commitments): el Estado debe comprometerse a respetar los derechos de propiedad para que los agentes inviertan</li>
+              <li><strong>Self-enforcing rights</strong>: los derechos sostenidos por el sistema de creencias compartidas, no sólo por el Estado</li>
+              <li>América Latina heredó instituciones <em>personalistas</em> de la colonia española (el poder personal sobre la ley) → dificultad persistente para consolidar reglas impersonales</li>
+            </ul>
+            <div class="tags"><span class="tag">orden político</span><span class="tag">compromisos creíbles</span><span class="tag">A. Latina</span></div>
+          </div>
+        </div>
+
+        <div class="card s4-theme">
+          <div class="card-header">
+            <div class="card-icon">👑</div>
+            <div class="card-meta">
+              <div class="card-author">Mancur Olson</div>
+              <div class="card-concept">El bandido estacionario y el origen del Estado</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <p>Modelo sobre por qué surge el Estado y cuándo favorece el desarrollo.</p>
+            <ul>
+              <li><em>Bandido errante</em>: roba todo lo que puede y se va → destruye incentivos; no le importa el futuro</li>
+              <li><strong>Bandido estacionario</strong>: tiene interés en que la economía prospere para extraer más impuestos → provee orden y bienes públicos básicos → proto-Estado</li>
+              <li><em>Interés comprensivo</em>: el gobernante estable internaliza el bienestar del territorio porque es su fuente de riqueza</li>
+              <li><strong>Segunda mano invisible</strong>: el interés egoísta del gobernante genera beneficios colectivos (análogo al mercado de Smith)</li>
+              <li>Los <strong>mercados auto-ejecutables</strong> son raros; la mayoría requieren construcción social (contrato, propiedad, enforcement)</li>
+              <li>Los <em>derechos individuales</em> son prerrequisito del desarrollo, no lujo</li>
+            </ul>
+            <div class="tags"><span class="tag">origen del Estado</span><span class="tag">mercados</span><span class="tag">derechos</span></div>
+          </div>
+        </div>
+
+        <div class="card s4-theme">
+          <div class="card-header">
+            <div class="card-icon">🌱</div>
+            <div class="card-meta">
+              <div class="card-author">Engerman &amp; Sokoloff</div>
+              <div class="card-concept">Dotaciones iniciales → Desigualdad → Instituciones</div>
+            </div>
+          </div>
+          <div class="dialogue-strip">
+            <span class="ds-extiende">→ Aplica: path dependence de North (1993) a la historia colonial</span>
+            <span class="ds-refuta">⚡ Refuta: explicaciones culturales/religiosas (protestante vs. católico) del desarrollo</span>
+            <span class="ds-recibido">⬇ Confirmado por: Easterly &amp; Levine (evidencia empírica con instrumentos)</span>
+            <span class="ds-recibido">⬇ Matizado por: Nunn — el mecanismo no es la plantación, sino la fragmentación social</span>
+          </div>
+          <div class="card-body">
+            <p>Las <strong>dotaciones iniciales</strong> del entorno colonial determinaron qué tipo de instituciones surgieron, y éstas persistieron.</p>
+            <ul>
+              <li>Tres tipos de colonias: (1) <em>plantaciones</em> (azúcar/algodón → desigualdad extrema → instituciones extractivas), (2) <em>minería</em> (metales preciosos → encomienda, trabajo forzado), (3) <em>colonias de poblamiento</em> (clima templado, pequeñas fincas → instituciones incluyentes)</li>
+              <li>La desigualdad inicial → élites capturan las instituciones (sufragio censitario, tierra concentrada, acceso desigual a educación y crédito) → se perpetúa</li>
+              <li><strong>Homestead Act</strong> de EE.UU. (1862): tierra distribuida a pequeños agricultores vs. concentración de tierra en AL → diferencia de capital humano e institucional durísima</li>
+              <li>Rechaza explicación cultural/religiosa (protestante vs. católico) como causa</li>
+            </ul>
+            <div class="tags"><span class="tag">path dependence</span><span class="tag">desigualdad</span><span class="tag">colonialismo</span></div>
+          </div>
+        </div>
+
+        <div class="card s4-theme">
+          <div class="card-header">
+            <div class="card-icon">🔗</div>
+            <div class="card-meta">
+              <div class="card-author">Easterly &amp; Levine</div>
+              <div class="card-concept">Geografía → Instituciones → Desarrollo (no efecto directo)</div>
+            </div>
+          </div>
+          <div class="dialogue-strip">
+            <span class="ds-refuta">⚡ Refuta efecto directo de: Sachs y Diamond — la geografía no importa por sí sola</span>
+            <span class="ds-confirma">✓ Confirma (vía instituciones): Engerman-Sokoloff — las dotaciones coloniales persisten</span>
+            <span class="ds-extiende">→ Cierra el debate S1–S5: geografía → tipo de colonia → instituciones → PIB hoy</span>
+          </div>
+          <div class="card-body">
+            <p>Artículo clave que <strong>cierra el debate</strong> geografía vs. instituciones con evidencia empírica.</p>
+            <ul>
+              <li>La geografía tiene <em>efecto indirecto</em>: determinó las instituciones coloniales (mortalidad de colonos → tipo de colonia), que persisten hoy</li>
+              <li><strong>No hay efecto directo</strong> de la geografía sobre el desarrollo al controlar por calidad institucional</li>
+              <li>Las <em>políticas económicas</em> son endógenas a las instituciones (no son fuente independiente)</li>
+              <li><strong>Instrumento</strong>: tasan de mortalidad de colonos europeos (zonas de alta mortalidad → colonias extractivas → peores instituciones hoy)</li>
+            </ul>
+            <div class="key-quote" style="color:var(--s4)">"Las instituciones lo son todo. La geografía importa, pero sólo a través de las instituciones."</div>
+            <div class="tags"><span class="tag">evidencia empírica</span><span class="tag">instrumentos</span><span class="tag">causalidad</span></div>
+          </div>
+        </div>
+
+        <div class="card s4-theme">
+          <div class="card-header">
+            <div class="card-icon">⛓️</div>
+            <div class="card-meta">
+              <div class="card-author">Nathan Nunn</div>
+              <div class="card-concept">Esclavitud africana y subdesarrollo actual</div>
+            </div>
+          </div>
+          <div class="dialogue-strip">
+            <span class="ds-matiza">↩ Matiza: Engerman-Sokoloff — el mecanismo dañino no son las grandes plantaciones sino la fragmentación social de pequeña escala</span>
+          </div>
+          <div class="card-body">
+            <p>Nunn encuentra que la intensidad histórica del comercio de esclavos <strong>correlaciona negativamente</strong> con el desarrollo actual de los países africanos.</p>
+            <ul>
+              <li>Más esclavos exportados en el pasado → menor PIB per cápita hoy</li>
+              <li>Mecanismo: destruyó capital social, atomizó comunidades, creó desconfianza generalizada</li>
+              <li><strong>Hallazgo contraintuitivo</strong>: no son las grandes plantaciones (Engerman-Sokoloff) sino la esclavitud de <em>pequeña escala</em> (capturas de vecinos, fragmentación social) la más dañina para el desarrollo</li>
+            </ul>
+            <div class="tags"><span class="tag">esclavitud</span><span class="tag">África</span><span class="tag">desconfianza</span><span class="tag">capital social</span></div>
+          </div>
+        </div>
+
+        <div class="card s4-theme">
+          <div class="card-header">
+            <div class="card-icon">🗺️</div>
+            <div class="card-meta">
+              <div class="card-author">Haber, Kennedy, Olsen et al.</div>
+              <div class="card-concept">4 Ecologías y el poder de las dotaciones pre-1800</div>
+            </div>
+          </div>
+          <div class="dialogue-strip">
+            <span class="ds-sintetiza">◈ Sintetiza: Diamond (ecología histórica) + North (instituciones) + Engerman-Sokoloff (dotaciones coloniales)</span>
+            <span class="ds-extiende">→ Añade: método de machine learning (random forest) para identificar los predictores más robustos</span>
+          </div>
+          <div class="card-body">
+            <p>Las dotaciones ecológicas pre-industriales (<em>antes de 1800</em>) explican el <strong>63% de la varianza</strong> en PIB per cápita actual.</p>
+            <ul>
+              <li><strong>4 ecologías</strong>:
+                <ul>
+                  <li><em>Transaccional</em>: agricultura intensiva, comercio, alta densidad urbana → instituciones de mercado</li>
+                  <li><em>Risk-Pooling</em>: pastoreo, incertidumbre → reciprocidad, comunidad</li>
+                  <li><em>Autosuficiente</em>: subsistencia, poca interacción → instituciones débiles</li>
+                  <li><em>Pastoril</em>: nómada, conflicto por tierra → normas de guerra/paz</li>
+                </ul>
+              </li>
+              <li>La <em>modernidad</em> (~1800) fue un shock exógeno que interactuó diferente con cada ecología</li>
+              <li>Método: random forest para identificar los predictores más importantes del PIB actual</li>
+            </ul>
+            <div class="tags"><span class="tag">ecologías</span><span class="tag">random forest</span><span class="tag">dotaciones</span><span class="tag">predictores</span></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="evo-connector to-next">
+        <span class="arrow">↓</span>
+        <span>Las instituciones explican mucho, pero también son persistentes porque están arraigadas en <strong>creencias y valores</strong>. North mismo señaló que el aprendizaje intergeneracional es cultura. La Semana 6 cierra el círculo: ¿puede la cultura en sí misma ser causa del desarrollo?</span>
+      </div>
+    </div>
+
+    <!-- ===== SEMANA 6 ===== -->
+    <div class="section s5-theme" id="s5">
+      <div class="section-header">
+        <div class="section-num">6</div>
+        <div>
+          <div class="section-title">Cultura y Desarrollo</div>
+          <div class="section-sub">Semana 6 · ¿Determina la cultura el desarrollo? Sí, pero no es destino</div>
+        </div>
+      </div>
+
+      <div class="cards-grid">
+
+        <div class="card s5-theme">
+          <div class="card-header">
+            <div class="card-icon">⛪</div>
+            <div class="card-meta">
+              <div class="card-author">Max Weber — La Ética Protestante y el Espíritu del Capitalismo (1905)</div>
+              <div class="card-concept">El calvinismo como motor del capitalismo</div>
+            </div>
+          </div>
+          <div class="dialogue-strip">
+            <span class="ds-refuta">⚡ Contra: Marx — la cultura (religión) determina la economía, no al revés</span>
+            <span class="ds-recibido">⬇ Extendido y corregido por: Fukuyama — erró sobre el Confucianismo</span>
+            <span class="ds-recibido">⬇ Criticado por: Sen — las teorías culturales son post-hoc y deterministas</span>
+            <span class="ds-recibido">⬇ Refutado como explicación única por: Engerman-Sokoloff (protestantismo vs. catolicismo no explica)</span>
+          </div>
+          <div class="card-body">
+            <p>La ética protestante (especialmente calvinista) fue la <strong>fuerza impulsora</strong> del capitalismo occidental.</p>
+            <ul>
+              <li><em>Calvino + predestinación</em>: no sabes si eres de los elegidos → angustia existencial</li>
+              <li>El éxito mundano como <strong>señal de gracia divina</strong> → trabaja duro, no despilfarres → ahorro y acumulación</li>
+              <li><strong>Ascetismo intramundano</strong>: la austeridad dentro del mundo (no en el convento) genera capital</li>
+              <li><strong>Beruf</strong> (vocación/llamado): el trabajo como deber sagrado</li>
+              <li><strong>Jaula de hierro</strong>: la racionalización instrumental que empezó como religión se vuelve autónoma y aplasta el espíritu original</li>
+            </ul>
+            <div class="key-quote" style="color:var(--s5)">"El capitalismo victorioso, desde que descansa sobre bases mecánicas, no necesita ya de este apoyo religioso."</div>
+            <div class="tags"><span class="tag">protestantismo</span><span class="tag">capitalismo</span><span class="tag">Beruf</span><span class="tag">jaula de hierro</span></div>
+          </div>
+        </div>
+
+        <div class="card s5-theme">
+          <div class="card-header">
+            <div class="card-icon">🌏</div>
+            <div class="card-meta">
+              <div class="card-author">Francis Fukuyama</div>
+              <div class="card-concept">Capital social, confianza y cultura</div>
+            </div>
+          </div>
+          <div class="dialogue-strip">
+            <span class="ds-extiende">→ Extiende: Weber — la cultura importa, pero no solo la protestante</span>
+            <span class="ds-matiza">↩ Corrige: Weber erró sobre el Confucianismo; los tigres asiáticos lo refutan</span>
+            <span class="ds-recibido">⬇ Criticado por: Sen — sigue siendo determinismo cultural</span>
+          </div>
+          <div class="card-body">
+            <p>La cultura (valores informales) explica por qué algunas economías funcionan mejor que otras.</p>
+            <ul>
+              <li>Weber tenía razón sobre el protestantismo, pero <em>erró</em> con el confucianismo: los tigres asiáticos son exitosos con una ética confuciana (demostración: la tesis cultural no se puede limitar al protestantismo)</li>
+              <li><strong>Capital social bridging</strong>: puentes entre grupos distintos → innovación, comercio amplio</li>
+              <li><strong>Capital social bonding</strong>: lazos dentro del grupo → lealtad pero exclusión</li>
+              <li><strong>Familismo amoral</strong> (Banfield): maximizar beneficio de la familia nuclear inmediata, desconfianza de todos los demás → imposibilita cooperación cívica más amplia</li>
+              <li>Las <em>burocracias meritocrática</em> asiáticas (Japón, Corea, Singapur) muestran que la cultura puede apoyar el Estado desarrollista</li>
+            </ul>
+            <div class="tags"><span class="tag">capital social</span><span class="tag">confianza</span><span class="tag">confucianismo</span><span class="tag">familismo</span></div>
+          </div>
+        </div>
+
+        <div class="card s5-theme">
+          <div class="card-header">
+            <div class="card-icon">🎭</div>
+            <div class="card-meta">
+              <div class="card-author">Amartya Sen (sobre cultura)</div>
+              <div class="card-concept">Cultura como medio Y fin; crítica al determinismo cultural</div>
+            </div>
+          </div>
+          <div class="dialogue-strip">
+            <span class="ds-refuta">⚡ Critica determinismo de: Weber y Fukuyama — las teorías culturales son post-hoc</span>
+            <span class="ds-extiende">→ Aplica su propio marco (Semana 1) a la cultura: capacidades y libertades culturales</span>
+            <span class="ds-confirma">✓ Caso japonés: confirma que el desarrollo no requiere protestantismo</span>
+          </div>
+          <div class="card-body">
+            <p>Sen cuestiona el determinismo cultural desde su enfoque de las capacidades.</p>
+            <ul>
+              <li>La cultura es <em>medio</em> del desarrollo (puede facilitar u obstaculizar) Y <em>fin</em> (la libertad cultural es en sí misma una dimensión del desarrollo)</li>
+              <li>El <strong>caso japonés</strong> refuta la unicidad protestante: la ética del trabajo, la educación masiva y la industrialización japonesa surgieron de tradiciones budistas y confucianas</li>
+              <li>Las <em>teorías culturales son post-hoc</em>: se construyen después del éxito/fracaso para explicarlo (Alemania de Weber es exitosa cuando escribe → concluye que el protestantismo causa éxito)</li>
+              <li>Las <strong>libertades culturales</strong> (poder practicar la propia cultura sin ser penalizado) son una dimensión evaluativa del desarrollo</li>
+            </ul>
+            <div class="tags"><span class="tag">determinismo cultural</span><span class="tag">Japón</span><span class="tag">libertades culturales</span></div>
+          </div>
+        </div>
+
+        <div class="card s5-theme">
+          <div class="card-header">
+            <div class="card-icon">🔧</div>
+            <div class="card-meta">
+              <div class="card-author">Michael Woolcock</div>
+              <div class="card-concept">4 generaciones de investigación sobre cultura y desarrollo</div>
+            </div>
+          </div>
+          <div class="dialogue-strip">
+            <span class="ds-sintetiza">◈ Sintetiza el debate: Weber, Fukuyama, Sen, North, Harrison sobre cultura y desarrollo</span>
+            <span class="ds-extiende">→ Propone agenda de 4ª generación: de "¿importa la cultura?" a mecanismos específicos</span>
+          </div>
+          <div class="card-body">
+            <p>Mapa intelectual de cómo ha evolucionado el pensamiento sobre cultura en economía del desarrollo.</p>
+            <ul>
+              <li><strong>3 tradiciones históricas</strong>: modernización (Parsons: variables pattern), dependencia (cultura=colonialismo), institucionalismo (North)</li>
+              <li><strong>Swidler's tool kit</strong>: la cultura no dicta valores sino provee herramientas para construir estrategias de acción (más flexible)</li>
+              <li><em>Etnicidad como identidad contingente</em>: no es fija biológicamente sino construida socialmente y reactivada estratégicamente</li>
+              <li><strong>4ª generación</strong>: pasar de "¿importa la cultura?" a identificar mecanismos específicos + variación intra-nacional (no tratar a un país como culturalmente homogéneo)</li>
+            </ul>
+            <div class="tags"><span class="tag">Swidler</span><span class="tag">etnicidad</span><span class="tag">mecanismos</span><span class="tag">variación intra-nacional</span></div>
+          </div>
+        </div>
+
+        <div class="card s5-theme">
+          <div class="card-header">
+            <div class="card-icon">🛢️</div>
+            <div class="card-meta">
+              <div class="card-author">Arturo Uslar Pietri</div>
+              <div class="card-concept">El subdesarrollo como fenómeno mental</div>
+            </div>
+          </div>
+          <div class="dialogue-strip">
+            <span class="ds-confirma">✓ Confirma para Venezuela: tesis de Weber (mentalidad = factor clave)</span>
+            <span class="ds-matiza">↔ Debate con: Briceño Guerrero — Uslar ve mentalidad corregible; Briceño ve laberinto sin salida</span>
+          </div>
+          <div class="card-body">
+            <p>El subdesarrollo latinoamericano es fundamentalmente un <strong>problema de mentalidad</strong>, no de recursos.</p>
+            <ul>
+              <li><em>Mentalidad anglosajona</em>: trabajo como virtud, ahorro, meritocracia, ley impersonal</li>
+              <li><em>Mentalidad iberoamericana colonial</em>: extracción de recursos, dependencia del Estado, personalismo</li>
+              <li>Los <strong>Cuatro Dragones asiáticos</strong> (Corea, Taiwán, Singapur, Hong Kong) se desarrollaron sin recursos naturales → la mentalidad importa más que los recursos</li>
+              <li>El <strong>petróleo venezolano</strong> perpetuó la mentalidad rentista: no se aprendió a producir, sólo a repartir la renta</li>
+            </ul>
+            <div class="tags"><span class="tag">Venezuela</span><span class="tag">mentalidad rentista</span><span class="tag">petróleo</span><span class="tag">Dragones asiáticos</span></div>
+          </div>
+        </div>
+
+        <div class="card s5-theme">
+          <div class="card-header">
+            <div class="card-icon">🌀</div>
+            <div class="card-meta">
+              <div class="card-author">J.M. Briceño Guerrero</div>
+              <div class="card-concept">Los tres discursos del venezolano</div>
+            </div>
+          </div>
+          <div class="dialogue-strip">
+            <span class="ds-matiza">↔ Responde a: Uslar Pietri — no es solo "mentalidad", es un laberinto de identidades en conflicto</span>
+            <span class="ds-extiende">→ Profundiza: Woolcock (variación intra-nacional) aplicado al caso venezolano</span>
+          </div>
+          <div class="card-body">
+            <p>El venezolano (y por extensión, el latinoamericano) está atrapado en un <strong>laberinto de tres discursos</strong> que se vetoean mutuamente.</p>
+            <ul>
+              <li><strong>Discurso europeo-segundo</strong>: razón ilustrada, modernización, progreso occidental → modernizante pero alienado de la realidad local</li>
+              <li><strong>Discurso mantuano</strong>: criollismo, élite colonial, conservadurismo social → auténtico pero elitista y excluyente</li>
+              <li><strong>Discurso salvaje</strong>: lo indígena-africano reprimido, la rabia popular → auténtico pero sin proyecto articulado</li>
+              <li>Cada uno <em>veta a los otros dos</em> → parálisis cultural, imposibilidad de síntesis</li>
+              <li><strong>Colonialismo intelectual</strong>: seguimos pensando con categorías europeas aplicadas a una realidad diferente</li>
+            </ul>
+            <div class="tags"><span class="tag">Venezuela</span><span class="tag">identidad</span><span class="tag">colonialismo cultural</span><span class="tag">laberinto</span></div>
+          </div>
+        </div>
+
+        <div class="card s5-theme">
+          <div class="card-header">
+            <div class="card-icon">📍</div>
+            <div class="card-meta">
+              <div class="card-author">Proyecto Pobreza — UCAB</div>
+              <div class="card-concept">Locus de control en Venezuela</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <p>Investigación empírica sobre las actitudes culturales en la pobreza venezolana.</p>
+            <ul>
+              <li><strong>Locus de control interno</strong> (22.9%): "mi destino depende de mí" → asociado con menor pobreza</li>
+              <li><em>Interdependiente</em> (18.7%): depende de mi grupo cercano</li>
+              <li><strong>Dependiente</strong> (37.3%): "depende del Estado, los partidos, los patrones"</li>
+              <li><em>Metasocial</em> (21.1%): "depende del destino, Dios, la suerte"</li>
+              <li>→ <strong>58.4% locus externo</strong> (dependiente + metasocial): la mayoría no se siente agente de su propio desarrollo</li>
+              <li><em>Familismo venezolano</em>: la familia como única institución confiable (refleja Banfield pero en contexto venezolano)</li>
+              <li><strong>La modernidad individual</strong> (locus interno, agencia) es condición cultural del desarrollo</li>
+            </ul>
+            <div class="tags"><span class="tag">Venezuela</span><span class="tag">agencia</span><span class="tag">locus de control</span><span class="tag">empiria</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===================== PRESENTACIONES TAB ===================== -->
+<div id="tab-presentaciones" class="tab-panel">
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-node" onclick="scrollToSection('p1')">
+        <div class="tl-circle s1">S1</div>
+        <div class="tl-label">Concepción</div>
+      </div>
+    </div>
+    <div class="tl-arrow">→</div>
+    <div class="tl-item">
+      <div class="tl-node" onclick="scrollToSection('p2')">
+        <div class="tl-circle s2">S2</div>
+        <div class="tl-label">Raza</div>
+      </div>
+    </div>
+    <div class="tl-arrow">→</div>
+    <div class="tl-item">
+      <div class="tl-node" onclick="scrollToSection('p3')">
+        <div class="tl-circle s3">S3</div>
+        <div class="tl-label">Geografía</div>
+      </div>
+    </div>
+    <div class="tl-arrow">→</div>
+    <div class="tl-item">
+      <div class="tl-node" onclick="scrollToSection('p4')">
+        <div class="tl-circle s4">S4-5</div>
+        <div class="tl-label">Instituciones</div>
+      </div>
+    </div>
+    <div class="tl-arrow">→</div>
+    <div class="tl-item">
+      <div class="tl-node" onclick="scrollToSection('p5')">
+        <div class="tl-circle s5">S6</div>
+        <div class="tl-label">Cultura</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="search-bar">
+    <input type="text" id="search-presentaciones" placeholder="🔍 Buscar en presentaciones..." oninput="filterCards('presentaciones')">
+  </div>
+
+  <div class="main">
+
+    <!-- P1 -->
+    <div class="section s1-theme" id="p1">
+      <div class="section-header">
+        <div class="section-num">1</div>
+        <div>
+          <div class="section-title">Concepción y Situación Actual</div>
+          <div class="section-sub">Láminas Semana 1 · Presentación del profesor</div>
+        </div>
+      </div>
+      <div class="cards-grid">
+
+        <div class="card s1-theme">
+          <div class="card-header">
+            <div class="card-icon">🏙️</div>
+            <div class="card-meta">
+              <div class="card-author">Comparaciones del profesor</div>
+              <div class="card-concept">¿Por qué importa el desarrollo? Contrastes vividos</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li><strong>Cité Soleil (Haití) vs. Oslo (Noruega)</strong>: mismo planeta, realidades opuestas → ¿qué lo explica?</li>
+              <li><strong>Sabaneta (Venezuela) vs. Noruega</strong>: fijado como pregunta central del curso</li>
+              <li>El profesor establece que la respuesta no puede ser racial (refutado más adelante)</li>
+            </ul>
+            <div class="tags"><span class="tag">motivación</span><span class="tag">preguntas del curso</span></div>
+          </div>
+        </div>
+
+        <div class="card s1-theme">
+          <div class="card-header">
+            <div class="card-icon">🧘</div>
+            <div class="card-meta">
+              <div class="card-author">Buda vs. Aristóteles (láminas)</div>
+              <div class="card-concept">Dos tradiciones filosóficas sobre la felicidad</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>Buda: el sufrimiento surge del deseo → supresión del ego</li>
+              <li>Aristóteles: la felicidad surge de realizar la naturaleza humana → florecimiento activo</li>
+              <li>El profesor usa esta tensión para abrir la pregunta: ¿qué tipo de bienestar busca el desarrollo?</li>
+            </ul>
+            <div class="tags"><span class="tag">filosofía</span><span class="tag">bienestar</span></div>
+          </div>
+        </div>
+
+        <div class="card s1-theme">
+          <div class="card-header">
+            <div class="card-icon">💬</div>
+            <div class="card-meta">
+              <div class="card-author">Robert F. Kennedy (cita en láminas)</div>
+              <div class="card-concept">Los límites del GNP</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <p>Cita famosa usada por el profesor para cuestionar el PIB como medida de desarrollo:</p>
+            <div class="key-quote" style="color:var(--s1)">"El GNP mide todo... excepto lo que hace que la vida valga la pena."</div>
+            <ul>
+              <li>El GNP incluye publicidad de cigarrillos y bombas, pero no salud de los niños ni belleza de la poesía</li>
+              <li>Usado para motivar el paso de PIB → índices multidimensionales (IDH, etc.)</li>
+            </ul>
+            <div class="tags"><span class="tag">PIB</span><span class="tag">límites del crecimiento</span></div>
+          </div>
+        </div>
+
+        <div class="card s1-theme">
+          <div class="card-header">
+            <div class="card-icon">📈</div>
+            <div class="card-meta">
+              <div class="card-author">Modelos Harrod-Domar y Solow (láminas)</div>
+              <div class="card-concept">Teorías del crecimiento económico clásico</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li><strong>Harrod-Domar</strong>: tasa de crecimiento = tasa de ahorro / coeficiente de capital; el crecimiento depende de inversión y ahorro</li>
+              <li><strong>Solow</strong>: añade tecnología exógena; en el largo plazo sólo el progreso técnico sostiene el crecimiento; el capital tiene rendimientos decrecientes → convergencia</li>
+              <li>Lucas: la tecnología es endógena (capital humano) → no necesariamente convergencia</li>
+              <li><strong>Productividad Total de Factores (PTF)</strong>: lo que el modelo no puede explicar con capital y trabajo → "residuo de Solow"</li>
+            </ul>
+            <div class="tags"><span class="tag">crecimiento económico</span><span class="tag">Solow</span><span class="tag">PTF</span></div>
+          </div>
+        </div>
+
+        <div class="card s1-theme">
+          <div class="card-header">
+            <div class="card-icon">📏</div>
+            <div class="card-meta">
+              <div class="card-author">PNUD / Stiglitz Commission (láminas)</div>
+              <div class="card-concept">IDH y medición del desarrollo</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li><strong>IDH = f(salud, educación, ingreso)</strong>: índice compuesto del PNUD</li>
+              <li><strong>Comisión Stiglitz-Sen-Fitoussi</strong> (2009): recomendaciones para ir más allá del PIB → medir bienestar subjetivo, sostenibilidad, equidad</li>
+              <li><strong>WGI</strong> (Worldwide Governance Indicators, Banco Mundial): 6 dimensiones de gobernanza como predictores de desarrollo</li>
+              <li>El profesor usa el IDH para mostrar que el desarrollo es multidimensional</li>
+            </ul>
+            <div class="tags"><span class="tag">IDH</span><span class="tag">gobernanza</span><span class="tag">medición</span></div>
+          </div>
+        </div>
+
+        <div class="card s1-theme">
+          <div class="card-header">
+            <div class="card-icon">📚</div>
+            <div class="card-meta">
+              <div class="card-author">Easterly — White Man's Burden (láminas)</div>
+              <div class="card-concept">Crítica a la ayuda internacional</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>La <em>ayuda al desarrollo</em> no funciona si no hay instituciones locales capaces de absorberla</li>
+              <li>Distinción entre <strong>Planners</strong> (imponen soluciones top-down) y <strong>Searchers</strong> (buscan soluciones locales bottom-up)</li>
+              <li>La arrogancia del planificador occidental perpetúa el subdesarrollo</li>
+            </ul>
+            <div class="tags"><span class="tag">ayuda internacional</span><span class="tag">instituciones</span><span class="tag">crítica</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- P2 -->
+    <div class="section s2-theme" id="p2">
+      <div class="section-header">
+        <div class="section-num">2</div>
+        <div>
+          <div class="section-title">Raza y Desarrollo</div>
+          <div class="section-sub">Láminas Semana 2 · Historia del racismo y su desmontaje</div>
+        </div>
+      </div>
+      <div class="cards-grid">
+
+        <div class="card s2-theme">
+          <div class="card-header">
+            <div class="card-icon">📜</div>
+            <div class="card-meta">
+              <div class="card-author">Historia intelectual del racismo (láminas)</div>
+              <div class="card-concept">Del bárbaro griego a la esclavitud moderna</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>Griegos → Aristóteles → <em>bárbaros</em> como naturalmente inferiores → esclavitud natural</li>
+              <li><strong>Juntas de letrados (1504)</strong>: debate en la corte española sobre si los indígenas americanos tienen alma y razón</li>
+              <li><strong>Maldición de Noé</strong> (Génesis 9): Cam/Canaán maldecido → interpretación para justificar esclavitud africana</li>
+              <li><strong>Vitoria y Escuela de Salamanca</strong> (s. XVI): primer cuestionamiento; los indígenas tienen derechos naturales; la guerra debe ser justa</li>
+              <li>Thomas Jefferson: contradice sus propias ideas sobre igualdad al poseer esclavos → hipocresía fundacional</li>
+            </ul>
+            <div class="tags"><span class="tag">historia del racismo</span><span class="tag">Vitoria</span><span class="tag">Jefferson</span></div>
+          </div>
+        </div>
+
+        <div class="card s2-theme">
+          <div class="card-header">
+            <div class="card-icon">🇻🇪</div>
+            <div class="card-meta">
+              <div class="card-author">Positivismo venezolano (láminas)</div>
+              <div class="card-concept">Racismo científico en Venezuela</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li><strong>Vallenilla Lanz</strong>: "Cesarismo democrático" — el caudillo como necesidad histórico-racial de Venezuela</li>
+              <li><strong>Blanco Fombona</strong>: la mezcla racial como problema para el progreso</li>
+              <li><strong>López Contreras</strong>: políticas de <em>blanqueamiento</em> — inmigración europea favorecida para "mejorar la raza"</li>
+              <li>Estas ideas legitimaron la dictadura y el autoritarismo con lenguaje científico</li>
+            </ul>
+            <div class="tags"><span class="tag">Venezuela</span><span class="tag">blanqueamiento</span><span class="tag">positivismo</span></div>
+          </div>
+        </div>
+
+        <div class="card s2-theme">
+          <div class="card-header">
+            <div class="card-icon">⚖️</div>
+            <div class="card-meta">
+              <div class="card-author">Segregación legal en EE.UU. (láminas)</div>
+              <div class="card-concept">Plessy vs. Ferguson y leyes anti-miscegenation</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li><strong>Plessy vs. Ferguson (1896)</strong>: "separados pero iguales" — legaliza la segregación racial en EE.UU. por 58 años</li>
+              <li><strong>Leyes anti-miscegenation</strong>: prohibición legal del matrimonio interracial en varios estados hasta 1967 (Loving vs. Virginia)</li>
+              <li>El profesor los usa para mostrar que el racismo científico tuvo consecuencias legales concretas y duraderas</li>
+            </ul>
+            <div class="tags"><span class="tag">segregación</span><span class="tag">EE.UU.</span><span class="tag">derechos civiles</span></div>
+          </div>
+        </div>
+
+        <div class="card s2-theme">
+          <div class="card-header">
+            <div class="card-icon">📊</div>
+            <div class="card-meta">
+              <div class="card-author">Raj Chetty et al. — Race and Economic Opportunity (láminas)</div>
+              <div class="card-concept">7 hallazgos sobre raza y movilidad en EE.UU.</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <p>Estudio empírico con datos de millones de personas. El profesor destaca 7 hallazgos clave:</p>
+            <ul>
+              <li>(1) Hombres negros tienen peores resultados que hombres blancos incluso controlando por ingreso familiar</li>
+              <li>(2) Mujeres negras y mujeres blancas tienen resultados similares → la brecha es de género-raza combinada</li>
+              <li>(3) El vecindario importa: crecer en vecindarios con más capital social mejora los resultados de hombres negros</li>
+              <li>(4) No es genética: la dispersión dentro del grupo afroamericano es mayor que entre grupos</li>
+              <li>(5-7) El efecto del vecindario es mayor en la infancia → intervenciones tempranas son claves</li>
+            </ul>
+            <div class="tags"><span class="tag">Chetty</span><span class="tag">movilidad</span><span class="tag">vecindario</span><span class="tag">empiria</span></div>
+          </div>
+        </div>
+
+        <div class="card s2-theme">
+          <div class="card-header">
+            <div class="card-icon">🌐</div>
+            <div class="card-meta">
+              <div class="card-author">ONU (láminas)</div>
+              <div class="card-concept">Declaración sobre Raza (1978)</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>La ONU declara que las <strong>razas humanas no tienen diferencias intelectuales innatas</strong></li>
+              <li>Las diferencias observadas son resultado de factores socioeconómicos e históricos, no biológicos</li>
+              <li>El profesor la usa como cierre del debate: el consenso científico y político internacional rechaza el racismo científico</li>
+            </ul>
+            <div class="tags"><span class="tag">ONU</span><span class="tag">declaración</span><span class="tag">consenso científico</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- P3 -->
+    <div class="section s3-theme" id="p3">
+      <div class="section-header">
+        <div class="section-num">3</div>
+        <div>
+          <div class="section-title">Geografía y Desarrollo</div>
+          <div class="section-sub">Láminas Semana 3 · Datos y mecanismos geográficos</div>
+        </div>
+      </div>
+      <div class="cards-grid">
+
+        <div class="card s3-theme">
+          <div class="card-header">
+            <div class="card-icon">⚔️</div>
+            <div class="card-meta">
+              <div class="card-author">Diamond — láminas del profesor</div>
+              <div class="card-concept">Cajamarca 1532: la geografía en acción</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>El profesor reconstruye el relato de Cajamarca en láminas: 168 españoles vs. 80,000 incas</li>
+              <li>Las láminas muestran la <strong>cadena causal completa</strong>: geografía → domesticación → excedente → Estados → armas → gérmenes</li>
+              <li>Tablas comparativas de <strong>gramíneas domesticables</strong> por región: Medialuna Fértil (Oriente Medio) ≫ América, África subsahariana</li>
+              <li>Tabla de <strong>mamíferos >100 kg potencialmente domesticables</strong>: Eurasia 13, América 1 (llama/alpaca), África 0</li>
+              <li><strong>Eje este-oeste</strong> de Eurasia: difusión fácil de cultivos → escala de adopción de tecnología</li>
+            </ul>
+            <div class="tags"><span class="tag">Cajamarca</span><span class="tag">domesticación</span><span class="tag">causalidad</span></div>
+          </div>
+        </div>
+
+        <div class="card s3-theme">
+          <div class="card-header">
+            <div class="card-icon">🌡️</div>
+            <div class="card-meta">
+              <div class="card-author">Sachs — láminas del profesor</div>
+              <div class="card-concept">Datos de geografía tropical y desarrollo</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li><strong>Gráfico PIB per cápita por latitud</strong>: correlación casi perfecta — países más alejados del ecuador son más ricos en promedio</li>
+              <li><strong>5 hipótesis de Sachs</strong> presentadas en lámina con esquema:
+                <ol>
+                  <li>Productividad agrícola tropical</li>
+                  <li>Vectores de enfermedades (malaria, esquistosomiasis)</li>
+                  <li>Tecnologías ecológico-específicas no transferibles</li>
+                  <li>Costos de transporte (sin ríos navegables)</li>
+                  <li>Acceso a agua potable</li>
+                </ol>
+              </li>
+              <li>Factores <em>adversos acumulativos</em>: ninguno solo explica todo, pero juntos crean trampas de pobreza</li>
+            </ul>
+            <div class="tags"><span class="tag">datos empíricos</span><span class="tag">trópico</span><span class="tag">latitud</span></div>
+          </div>
+        </div>
+
+        <div class="card s3-theme">
+          <div class="card-header">
+            <div class="card-icon">🏙️</div>
+            <div class="card-meta">
+              <div class="card-author">Henderson et al. — láminas</div>
+              <div class="card-concept">Urbanización, persistencia y costos de transporte</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>Las ciudades persisten por <strong>economías de aglomeración</strong>: una vez establecidas, es muy costoso relocalizarlas</li>
+              <li>Los países que urbanizaron temprano (colonizadores europeos) tienen ventajas persistentes de escala</li>
+              <li><strong>Costos de transporte históricos</strong>: el ferrocarril, los ríos navegables y los puertos determinaron qué zonas se desarrollaron → la geografía fijó la infraestructura, que fijó el desarrollo</li>
+            </ul>
+            <div class="tags"><span class="tag">ciudades</span><span class="tag">aglomeración</span><span class="tag">transporte</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- P4 -->
+    <div class="section s4-theme" id="p4">
+      <div class="section-header">
+        <div class="section-num">4-5</div>
+        <div>
+          <div class="section-title">Instituciones y Desarrollo</div>
+          <div class="section-sub">Láminas Semanas 4–5 · Mecanismos institucionales con evidencia empírica</div>
+        </div>
+      </div>
+      <div class="cards-grid">
+
+        <div class="card s4-theme">
+          <div class="card-header">
+            <div class="card-icon">🌱</div>
+            <div class="card-meta">
+              <div class="card-author">Engerman &amp; Sokoloff — láminas</div>
+              <div class="card-concept">Dotaciones iniciales: 3 tipos de colonias</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>El profesor presenta el argumento E&amp;S con un <strong>diagrama causal</strong> en láminas</li>
+              <li>3 tipos de colonias según dotación inicial:
+                <ul>
+                  <li><em>Colonias de plantación</em> (Caribe, Brasil): azúcar, algodón, esclavitud → desigualdad extrema → instituciones extractivas</li>
+                  <li><em>Colonias mineras</em> (México, Perú): trabajo forzado indígena → encomienda → instituciones personalistas</li>
+                  <li><em>Colonias de clima templado</em> (Nueva Inglaterra, Canadá): pequeñas fincas, colonos europeos → instituciones incluyentes</li>
+                </ul>
+              </li>
+              <li>Las láminas muestran cómo la <strong>desigualdad inicial persiste</strong> a través de sufragio censitario, concentración de tierra, acceso diferencial a educación y sistema financiero</li>
+            </ul>
+            <div class="tags"><span class="tag">colonias</span><span class="tag">desigualdad persistente</span><span class="tag">dotaciones</span></div>
+          </div>
+        </div>
+
+        <div class="card s4-theme">
+          <div class="card-header">
+            <div class="card-icon">🔗</div>
+            <div class="card-meta">
+              <div class="card-author">Easterly &amp; Levine — láminas</div>
+              <div class="card-concept">El diagrama causal: geografía → instituciones → desarrollo</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>El profesor presenta el <strong>diagrama causal completo</strong>:
+                <br>Geografía (mortalidad colonos) → Tipo de colonia → Calidad institucional → PIB hoy
+              </li>
+              <li>Las pruebas empíricas en láminas:
+                <ul>
+                  <li>Coeficiente de geografía se vuelve insignificante cuando entran instituciones al modelo</li>
+                  <li>Coeficiente de instituciones permanece robusto y grande</li>
+                  <li>Políticas económicas: endógenas, no independientes</li>
+                </ul>
+              </li>
+            </ul>
+            <div class="tags"><span class="tag">diagrama causal</span><span class="tag">regresión</span><span class="tag">instrumentos</span></div>
+          </div>
+        </div>
+
+        <div class="card s4-theme">
+          <div class="card-header">
+            <div class="card-icon">⛓️</div>
+            <div class="card-meta">
+              <div class="card-author">Nunn — láminas</div>
+              <div class="card-concept">4 tablas sobre esclavitud y desarrollo africano</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>El profesor muestra las 4 tablas de Nunn en láminas:
+                <ul>
+                  <li>Tabla 1: correlación esclavos exportados → PIB per cápita actual (negativa y significativa)</li>
+                  <li>Tabla 2: efecto persiste controlando por geografía, colonizador, religión</li>
+                  <li>Tabla 3: mecanismo → menor confianza interpersonal en zonas de alta esclavitud</li>
+                  <li>Tabla 4: es la esclavitud de pequeña escala (no las grandes plantaciones) la más dañina</li>
+                </ul>
+              </li>
+            </ul>
+            <div class="tags"><span class="tag">África</span><span class="tag">esclavitud</span><span class="tag">confianza</span><span class="tag">datos</span></div>
+          </div>
+        </div>
+
+        <div class="card s4-theme">
+          <div class="card-header">
+            <div class="card-icon">🗺️</div>
+            <div class="card-meta">
+              <div class="card-author">Haber et al. — láminas</div>
+              <div class="card-concept">Random Forest y las 4 ecologías</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>El profesor muestra el mapa mundial con las <strong>4 ecologías pintadas</strong> por país</li>
+              <li>El <strong>gráfico de random forest</strong>: importancia relativa de cada variable en predecir el PIB actual → las dotaciones pre-1800 dominan</li>
+              <li>Lámina de <strong>crecimiento económico por ecología</strong>: las ecologías transaccionales crecieron consistentemente más desde 1800</li>
+              <li>La modernidad como shock exógeno que interactuó diferente con cada ecología</li>
+            </ul>
+            <div class="tags"><span class="tag">machine learning</span><span class="tag">ecologías</span><span class="tag">predicción</span></div>
+          </div>
+        </div>
+
+        <div class="card s4-theme">
+          <div class="card-header">
+            <div class="card-icon">🏛️</div>
+            <div class="card-meta">
+              <div class="card-author">North &amp; Olson — láminas del profesor</div>
+              <div class="card-concept">Definiciones clave y el origen del Estado</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li><strong>Definiciones de North en láminas</strong>:
+                <ul>
+                  <li>Instituciones = reglas del juego (no son jugadores)</li>
+                  <li>Organizaciones = grupos con objetivo común (jugadores)</li>
+                  <li>Cambio institucional = proceso mediante el cual evoluciona el orden social</li>
+                </ul>
+              </li>
+              <li><strong>Olson — 3 funciones básicas del Estado</strong>:
+                <ol>
+                  <li>Proveer seguridad de derechos de propiedad</li>
+                  <li>Hacer cumplir contratos impersonalmente</li>
+                  <li>Proveer bienes públicos que el mercado no suministra</li>
+                </ol>
+              </li>
+              <li>El profesor señala que pocas democracias en desarrollo cumplen las 3</li>
+            </ul>
+            <div class="tags"><span class="tag">North</span><span class="tag">Olson</span><span class="tag">Estado</span><span class="tag">derechos</span></div>
+          </div>
+        </div>
+
+        <div class="card s4-theme">
+          <div class="card-header">
+            <div class="card-icon">📋</div>
+            <div class="card-meta">
+              <div class="card-author">NSW — láminas</div>
+              <div class="card-concept">Orden político, compromisos creíbles y América Latina</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>El profesor presenta el argumento NSW sobre el <strong>orden político como bien público fundamental</strong></li>
+              <li>Sin orden político estable, los agentes económicos no invierten a largo plazo</li>
+              <li>América Latina como caso: la herencia colonial española instaló <em>instituciones personalistas</em> — el poder del individuo sobre la ley — que persisten hoy en el caudillismo, la corrupción y la debilidad del Estado de derecho</li>
+            </ul>
+            <div class="tags"><span class="tag">A. Latina</span><span class="tag">orden político</span><span class="tag">caudillismo</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- P5 -->
+    <div class="section s5-theme" id="p5">
+      <div class="section-header">
+        <div class="section-num">6</div>
+        <div>
+          <div class="section-title">Cultura y Desarrollo</div>
+          <div class="section-sub">Láminas Semana 6 · 24 slides del profesor</div>
+        </div>
+      </div>
+      <div class="cards-grid">
+
+        <div class="card s5-theme">
+          <div class="card-header">
+            <div class="card-icon">⛪</div>
+            <div class="card-meta">
+              <div class="card-author">Max Weber — Slides 1–5</div>
+              <div class="card-concept">Por qué surgió el capitalismo: la Reforma Protestante</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <p>El profesor desarrolla la tesis de Weber con detalle teológico:</p>
+            <ul>
+              <li>El capitalismo <em>no es natural</em> — lo natural es solo buscar la supervivencia; acumular más allá es cultural</li>
+              <li><strong>Catolicismo</strong>: la vida terrenal tiene poco propósito; lo sagrado es el monasterio</li>
+              <li><strong>Protestantismo (Lutero)</strong>: trabajar es servir a Dios; la vida mundana es un deber. Pero Lutero era <em>tradicionalista</em> — no pretendía crear capitalismo</li>
+              <li><strong>Calvinismo</strong>: Dios ya eligió a los salvados desde la eternidad (<em>predestinación</em>); el creyente busca señales de su elección; el éxito económico = señal de gracia divina</li>
+              <li><strong>Benjamín Franklin</strong>: el <em>ethos capitalista</em> en acción — puntualidad, honestidad, laboriosidad, éxito como deber moral</li>
+              <li>Consecuencia no prevista: el ascetismo calvinista generó acumulación de capital</li>
+            </ul>
+            <div class="key-quote" style="color:var(--s5)">"Las ganancias como fin en sí mismo: una señal de gracia divina, una evidencia de que uno era parte de los elegidos por Dios."</div>
+            <div class="tags"><span class="tag">Weber</span><span class="tag">Calvino</span><span class="tag">Lutero</span><span class="tag">predestinación</span></div>
+          </div>
+        </div>
+
+        <div class="card s5-theme">
+          <div class="card-header">
+            <div class="card-icon">🌐</div>
+            <div class="card-meta">
+              <div class="card-author">Fukuyama — Slides 6–9</div>
+              <div class="card-concept">Cultura, capital social y costos de transacción</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <p>El profesor presenta el mapa conceptual de Fukuyama sobre cómo la cultura conecta con el desarrollo:</p>
+            <ul>
+              <li><strong>Cultura</strong>: sistema heredado de concepciones expresado en formas simbólicas (Geertz)</li>
+              <li><strong>Fukuyama</strong>: hábitos éticos heredados — especialmente los que regulan la conducta colectiva</li>
+              <li>La distinción entre decisión racional y cultura es <em>difusa</em>: lo que empieza como decisión racional puede volverse atributo cultural</li>
+              <li><strong>La cultura determina las formas de comportamiento económico</strong> (Weber) — no al revés (Marx)</li>
+              <li><strong>Capital social</strong>: habilidad de trabajar en objetivo común. Función económica: <em>reduce costos de transacción</em> (monitoreo, negociación, cumplimiento legal)</li>
+              <li>Confianza = bien económico de alto valor</li>
+              <li>El Estado <strong>no tiene muchos instrumentos</strong> para crear capital social directamente; puede: proveer educación, bienes públicos, y <em>no interferir excesivamente</em></li>
+            </ul>
+            <div class="tags"><span class="tag">capital social</span><span class="tag">confianza</span><span class="tag">costos transacción</span></div>
+          </div>
+        </div>
+
+        <div class="card s5-theme">
+          <div class="card-header">
+            <div class="card-icon">📋</div>
+            <div class="card-meta">
+              <div class="card-author">Harrison — Slide 10</div>
+              <div class="card-concept">20 factores culturales que distinguen desarrollo de estancamiento</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <p>El profesor presenta las <strong>20 dicotomías culturales</strong> que Harrison identifica entre culturas que favorecen el desarrollo vs. las que no:</p>
+            <div class="two-col" style="font-size:0.78rem;margin-top:0.5rem">
+              <div>
+                <strong style="color:var(--s5d)">Cultura que obstaculiza:</strong>
+                <ul>
+                  <li>Preferencia por los pobres / igualitarismo extremo</li>
+                  <li>Sumisión a la autoridad</li>
+                  <li>Ley moral utópica incompatible con realidad</li>
+                  <li>Riqueza = cantidad fija (suma cero)</li>
+                  <li>Lealtades particulares sobre normas</li>
+                  <li>Gratificación inmediata</li>
+                  <li>Orientación al pasado</li>
+                  <li>Utopía fanática e inalcanzable</li>
+                </ul>
+              </div>
+              <div>
+                <strong style="color:var(--s3d)">Cultura que favorece:</strong>
+                <ul>
+                  <li>Meritocracia, recompensa al logro</li>
+                  <li>Iniciativa individual</li>
+                  <li>Imperio de la ley imparcial</li>
+                  <li>Riqueza = expandible (suma positiva)</li>
+                  <li>Principios universales</li>
+                  <li>Diferimiento de gratificación</li>
+                  <li>Orientación al futuro próximo</li>
+                  <li>Avance gradual hacia utopía lejana</li>
+                </ul>
+              </div>
+            </div>
+            <div class="tags"><span class="tag">Harrison</span><span class="tag">valores culturales</span><span class="tag">dicotomías</span></div>
+          </div>
+        </div>
+
+        <div class="card s5-theme">
+          <div class="card-header">
+            <div class="card-icon">🏭</div>
+            <div class="card-meta">
+              <div class="card-author">Michael Porter — Slide 11</div>
+              <div class="card-concept">Prosperidad = productividad, no recursos</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>La prosperidad proviene de la <strong>productividad y competitividad</strong> (calidad, unicidad, eficiencia), no de la posesión o control de recursos</li>
+              <li>El papel del gobierno: crear <em>condiciones</em> para la productividad, no proveer protecciones</li>
+              <li>Culturas que parecen "improductivas": el problema suele ser creencias erróneas, estructuras de poder, o incentivos mal alineados — <em>no la cultura en sí misma como destino</em></li>
+              <li><strong>Convergencia global</strong> hacia la cultura de la productividad (globalización, mercados de capital, difusión tecnológica) — pero algunos rasgos culturales importan más que otros</li>
+            </ul>
+            <div class="tags"><span class="tag">Porter</span><span class="tag">productividad</span><span class="tag">competitividad</span></div>
+          </div>
+        </div>
+
+        <div class="card s5-theme">
+          <div class="card-header">
+            <div class="card-icon">🌿</div>
+            <div class="card-meta">
+              <div class="card-author">Edgerton — Slide 12</div>
+              <div class="card-concept">Relativismo cultural y sus límites</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>El <strong>relativismo cultural</strong> (Colón, Tomás Moro, Rousseau: el "feliz salvaje") idealiza al no-occidental para criticar a Occidente</li>
+              <li>Edgerton: las culturas tienen <em>inadaptabilidades</em> reales — no todo es igualmente válido</li>
+              <li><strong>Darwin vs. irracionalidad cultural</strong>: las culturas deberían adaptarse para sobrevivir; cuando no lo hacen, hay irracionalidad</li>
+              <li><em>Límites de la racionalidad</em> (North, Kahnemann): la irracionalidad puede ser mayor en culturas tradicionales con menos retroalimentación de mercado</li>
+              <li><strong>The March of Folly</strong> (Tuchman): grandes civilizaciones tomaron decisiones irracionales conociendo las consecuencias (Troya, Vietnam)</li>
+            </ul>
+            <div class="tags"><span class="tag">relativismo</span><span class="tag">Edgerton</span><span class="tag">irracionalidad</span></div>
+          </div>
+        </div>
+
+        <div class="card s5-theme">
+          <div class="card-header">
+            <div class="card-icon">📍</div>
+            <div class="card-meta">
+              <div class="card-author">Proyecto Pobreza UCAB — Slides 13–16</div>
+              <div class="card-concept">Mapa cultural del venezolano: 6 arquetipos</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <p>El profesor muestra los datos completos con los arquetipos culturales venezolanos:</p>
+            <p><strong>Locus de control:</strong></p>
+            <ul>
+              <li>Individual (interno): <strong>22.9%</strong></li>
+              <li>Interdependiente: 18.7%</li>
+              <li>Dependiente: <strong>37.3%</strong></li>
+              <li>Metasocial: 21.1%</li>
+              <li>→ <em>58.4% locus externo</em></li>
+            </ul>
+            <p style="margin-top:0.6rem"><strong>6 arquetipos culturales:</strong></p>
+            <ul>
+              <li><strong>Rezagados (27.6%)</strong>: mentalidad premoderna, control metasocial, bajo desempeño</li>
+              <li><strong>Tutelados (10.8%)</strong>: igual pero interdependiente, alta desconfianza</li>
+              <li><strong>Emancipados (25.2%)</strong>: privilegia desempeño, desconfianza media</li>
+              <li><strong>Movilizados (4.2%)</strong>: desempeño + control individual — el grupo más cercano a la modernidad</li>
+              <li><strong>Desarraigados (19.1%)</strong>: orientado a modernidad pero interdependiente, alta desconfianza</li>
+              <li><strong>Integrados (13.2%)</strong>: modernidad + foco individual + <em>baja desconfianza</em> — el arquetipo más funcional</li>
+            </ul>
+            <div class="key-quote" style="color:var(--s5)">Solo el 13.2% presenta el perfil cultural asociado al desarrollo moderno.</div>
+            <div class="tags"><span class="tag">UCAB</span><span class="tag">Venezuela</span><span class="tag">arquetipos</span><span class="tag">empiria</span></div>
+          </div>
+        </div>
+
+        <div class="card s5-theme">
+          <div class="card-header">
+            <div class="card-icon">⚖️</div>
+            <div class="card-meta">
+              <div class="card-author">Parsons — Slide 14</div>
+              <div class="card-concept">Dicotomías valorativas: cultura tradicional vs. moderna</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <p>El profesor presenta las <strong>dicotomías parsonianas</strong> como herramienta para clasificar la cultura venezolana:</p>
+            <div class="two-col" style="font-size:0.78rem">
+              <div>
+                <strong style="color:var(--s5d)">Cultura Tradicional:</strong>
+                <ul>
+                  <li><em>Adscripción</em>: se valora por posición social/herencia</li>
+                  <li><em>Afectividad</em>: gratificación inmediata</li>
+                  <li><em>Particularismo</em>: lealtades específicas</li>
+                  <li><em>Difusividad</em>: persona total, sin separar contextos</li>
+                  <li><em>Orientación hacia sí</em>: interés propio primero</li>
+                </ul>
+              </div>
+              <div>
+                <strong style="color:var(--s3d)">Cultura Moderna:</strong>
+                <ul>
+                  <li><em>Desempeño</em>: se valora por logros</li>
+                  <li><em>Neutralidad afectiva</em>: difiere la gratificación</li>
+                  <li><em>Universalismo</em>: normas impersonales</li>
+                  <li><em>Especificidad</em>: separa espacios y contextos</li>
+                  <li><em>Orientación colectiva</em>: bien común primero</li>
+                </ul>
+              </div>
+            </div>
+            <p style="margin-top:0.5rem;font-size:0.8rem">Venezuela: <strong>66% tradicional</strong> (Adscripción), solo 34% moderna.</p>
+            <div class="tags"><span class="tag">Parsons</span><span class="tag">modernidad</span><span class="tag">Venezuela</span></div>
+          </div>
+        </div>
+
+        <div class="card s5-theme">
+          <div class="card-header">
+            <div class="card-icon">🔧</div>
+            <div class="card-meta">
+              <div class="card-author">Woolcock — Slide 18</div>
+              <div class="card-concept">Tres visiones de la cultura y la capacidad de aspirar</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li><strong>3 visiones de la cultura en el desarrollo</strong>:
+                <ul>
+                  <li>Irrelevante para el desarrollo o consecuencia de él</li>
+                  <li>Un problema que hay que superar</li>
+                  <li>El determinante fundamental del desarrollo</li>
+                </ul>
+              </li>
+              <li><strong>Swidler</strong>: la cultura como <em>caja de herramientas</em> — hábitos, habilidades y estilos con los que la gente elabora estrategias de acción</li>
+              <li><strong>La capacidad de aspirar</strong> (Appadurai): culturas que suprimen las aspiraciones de sus miembros limitan el desarrollo</li>
+              <li>La <em>etnicidad es un concepto fluido</em> / variable dependiente (caso Rwanda: la identidad Hutu/Tutsi fue construida y manipulada)</li>
+              <li>Agenda: profundizar en contexto local, identificar "desviaciones positivas" dentro de culturas que parecen obstaculizar el desarrollo</li>
+            </ul>
+            <div class="tags"><span class="tag">Woolcock</span><span class="tag">Swidler</span><span class="tag">aspiraciones</span><span class="tag">Rwanda</span></div>
+          </div>
+        </div>
+
+        <div class="card s5-theme">
+          <div class="card-header">
+            <div class="card-icon">🔀</div>
+            <div class="card-meta">
+              <div class="card-author">North — Slide 19</div>
+              <div class="card-concept">Tipos de orden político y la naturaleza del cambio</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <p>El profesor aplica a la cultura el marco de North sobre cambio institucional:</p>
+            <ul>
+              <li>Nuestras percepciones de la realidad están <em>plagadas de errores</em>; los sistemas de creencias son modelos "errados"</li>
+              <li><strong>Orden consensual</strong>: sistema común de creencias que coloca fronteras creíbles al comportamiento de las élites. <em>Compromisos creíbles</em>. "Rayas amarillas / puntos focales"</li>
+              <li><strong>Orden no consensual (autoritario)</strong>: la élite apoyada en un grupo transgrede derechos del resto. <em>Compromisos no creíbles</em>. Altos costos de perder el poder → búsqueda de rentas</li>
+              <li><strong>La dinámica de las revoluciones</strong>: EUA logró orden consensual; América española no. Diferencia en horizontes temporales de las élites</li>
+            </ul>
+            <div class="tags"><span class="tag">orden político</span><span class="tag">compromisos</span><span class="tag">rentas</span><span class="tag">A. Latina</span></div>
+          </div>
+        </div>
+
+        <div class="card s5-theme">
+          <div class="card-header">
+            <div class="card-icon">🗳️</div>
+            <div class="card-meta">
+              <div class="card-author">Tocqueville — Slide 20</div>
+              <div class="card-concept">Causas del éxito democrático en EUA</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <p>El profesor retoma a Tocqueville para cerrar el argumento cultural:</p>
+            <ul>
+              <li><strong>3 causas del éxito republicano en EUA</strong>: (1) ubicación geográfica favorable, (2) leyes (federalismo, poder judicial), (3) <em>hábitos y costumbres</em> — y esta última es la más importante</li>
+              <li><strong>EUA</strong>: pasiones comerciales, no políticas; sociedad madura desde el inicio; educación práctica (no ilustración abstracta)</li>
+              <li>Contraste: <strong>México</strong> copió las leyes de EUA pero no los hábitos culturales → las instituciones no funcionaron igual</li>
+              <li><em>Igualdad de condiciones</em> como principio cultural previo que hace funcionar las instituciones</li>
+            </ul>
+            <div class="key-quote" style="color:var(--s5)">"Las leyes sin los hábitos y costumbres son letra muerta."</div>
+            <div class="tags"><span class="tag">Tocqueville</span><span class="tag">EUA vs México</span><span class="tag">hábitos</span></div>
+          </div>
+        </div>
+
+        <div class="card s5-theme">
+          <div class="card-header">
+            <div class="card-icon">🌀</div>
+            <div class="card-meta">
+              <div class="card-author">Briceño Guerrero — Slide 22</div>
+              <div class="card-concept">Los tres discursos del pensamiento americano</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li><strong>Discurso cristiano-hispánico (mantuano)</strong>: nobleza heredada, jerarquía y privilegios, blanqueamiento, educación para reproducir la élite</li>
+              <li><strong>Discurso modernizador</strong>: ilustración, progreso, racionalidad occidental — transplantado sin raíces locales</li>
+              <li><strong>Discurso salvaje</strong>: resentimiento, nostalgia indígena-africana, rabia popular sin proyecto articulado</li>
+              <li>Los tres discursos <em>se interpenetran, se parasitan, se obstaculizan mutuamente</em></li>
+              <li><strong>Ninguno de los tres logra gobernar la vida pública</strong> — laberinto sin salida</li>
+            </ul>
+            <div class="tags"><span class="tag">Briceño Guerrero</span><span class="tag">Venezuela</span><span class="tag">laberinto cultural</span></div>
+          </div>
+        </div>
+
+        <div class="card s5-theme">
+          <div class="card-header">
+            <div class="card-icon">🛢️</div>
+            <div class="card-meta">
+              <div class="card-author">Uslar Pietri — Slide 23</div>
+              <div class="card-concept">El subdesarrollo es, ante todo, una cuestión mental</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <p>El profesor proyecta el párrafo completo de Uslar Pietri — el más importante de la Semana 6:</p>
+            <div class="key-quote" style="color:var(--s5)">"La diferencia fundamental estuvo en una cierta mentalidad. Los colonos ingleses llevaban con ellos un concepto de la dignidad del trabajo y la virtud del ahorro… El subdesarrollo no es un fenómeno producido por causas geográficas y materiales, sino por la manera de concebir la acción individual y la pública. Es, antes que todo, una cuestión mental."</div>
+            <ul>
+              <li>Contraste: colonos ingleses (granjeros y artesanos con ética del trabajo) vs. conquistadores españoles (extracción, dependencia del gobierno)</li>
+              <li><strong>Caso Japón</strong>: sin recursos naturales, con herencia feudal y guerrera, pero con disciplina social del trabajo → modernización exitosa</li>
+              <li>El subdesarrollo = <em>actitud</em>, no geografía ni recursos</li>
+            </ul>
+            <div class="tags"><span class="tag">Uslar Pietri</span><span class="tag">mentalidad</span><span class="tag">Japón</span><span class="tag">colonos ingleses</span></div>
+          </div>
+        </div>
+
+        <div class="card s5-theme">
+          <div class="card-header">
+            <div class="card-icon">🔄</div>
+            <div class="card-meta">
+              <div class="card-author">Cierre del curso — Slide 24</div>
+              <div class="card-concept">Círculo virtuoso: instituciones ↔ confianza ↔ cultura</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <p>El profesor cierra con la pregunta normativa del curso:</p>
+            <ul>
+              <li><strong>Círculo virtuoso</strong>: institucionalidad sólida → genera confianza → refuerza cultura productiva → fortalece instituciones</li>
+              <li><strong>Círculo vicioso</strong> (el caso venezolano): institucionalidad débil → desconfianza → cultura de dependencia y corrupción → debilita aún más las instituciones</li>
+              <li><em>Sense of us</em> + <strong>empatía</strong> como condición psicológica previa</li>
+              <li>Pregunta abierta: <strong>¿Podemos influir sobre el sistema de creencias?</strong>
+                <ul>
+                  <li>Ejemplo positivo: <strong>Metro de Caracas</strong> — generó normas de comportamiento moderno (puntualidad, limpieza, respeto) que no existían antes</li>
+                  <li>Ejemplo positivo: <strong>Canadá</strong> — recibió inmigrantes de culturas muy distintas y construyó una cultura cívica común</li>
+                </ul>
+              </li>
+            </ul>
+            <div class="tags"><span class="tag">círculo virtuoso</span><span class="tag">cambio cultural</span><span class="tag">Metro Caracas</span><span class="tag">Canadá</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    if (b.getAttribute('onclick').includes(tab)) b.classList.add('active');
+  });
+}
+
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function filterCards(tab) {
+  const query = document.getElementById('search-' + tab).value.toLowerCase();
+  const panel = document.getElementById('tab-' + tab);
+  panel.querySelectorAll('.card, .slide-card').forEach(card => {
+    const text = card.innerText.toLowerCase();
+    card.style.display = text.includes(query) ? '' : 'none';
+  });
+  panel.querySelectorAll('.section').forEach(section => {
+    const visibleCards = section.querySelectorAll('.card:not([style*="display: none"]), .slide-card:not([style*="display: none"])');
+    section.style.display = visibleCards.length > 0 ? '' : 'none';
+  });
+}
+
+// ── TAG POPOVER ──────────────────────────────────────────────
+const TAG_INFO = {
+  // S1 — Concepción
+  "ética": { title: "Ética (Aristóteles)", body: "Estudio de la acción correcta. Para Aristóteles, la ética no es una lista de reglas sino el desarrollo de hábitos virtuosos a través de la práctica." },
+  "bien humano": { title: "Bien humano (Aristóteles)", body: "El <strong>télos</strong> del ser humano: la eudaimonía (florecimiento). No es placer ni riqueza, sino realizar la función propia del alma conforme a la virtud." },
+  "virtud": { title: "Virtud (Aristóteles / Brooks)", body: "Disposición estable adquirida por repetición. Aristóteles: justo medio entre dos vicios. Brooks distingue virtudes de currículo (éxito) vs. virtudes de eulogy (carácter)." },
+  "carácter": { title: "Carácter (Brooks)", body: "Para Brooks, el carácter (Adam II) se construye mediante la lucha moral, no el éxito. Es lo que queda cuando se apagan los reflectores." },
+  "sentido de vida": { title: "Sentido de vida (Brooks)", body: "La vocación como llamado externo que trasciende el interés personal. Diferente de la carrera, que es interna y autointeresada." },
+  "capacidades": { title: "Capacidades — Capabilities (Sen)", body: "Lo que una persona puede <em>ser</em> y <em>hacer</em> realmente. Un país puede tener alto PIB pero bajas capacidades si la distribución es muy desigual." },
+  "libertad": { title: "Libertad (Sen)", body: "El desarrollo ES la expansión de libertades reales. Sen identifica 5 tipos instrumentales: políticas, económicas, sociales, de transparencia y seguridad protectora." },
+  "agencia": { title: "Agencia (Sen)", body: "Capacidad de actuar según las metas propias, no solo recibir bienestar pasivamente. Una persona puede tener alto bienestar pero baja agencia (ej. un prisionero cómodo)." },
+  "moral": { title: "Moral (Adam Smith)", body: "En la Teoría de los Sentimientos Morales, Smith argumenta que la conducta moral surge de la simpatía y el espectador imparcial, no del cálculo racional." },
+  "justicia": { title: "Justicia (Adam Smith)", body: "Pilar de la sociedad civil. Sin justicia, ninguna cooperación social es posible. Smith la considera más fundamental que la beneficencia." },
+  "sociedad": { title: "Sociedad civil (Smith / Tocqueville)", body: "El tejido de instituciones, normas y asociaciones voluntarias que median entre el individuo y el Estado. Su fortaleza es predictor del desarrollo." },
+  "democracia": { title: "Democracia (Sen / Tocqueville)", body: "Sen: la democracia previene hambrunas por accountability. Tocqueville: la democracia enfrenta el peligro del individualismo y la tiranía de la mayoría." },
+  "libertad política": { title: "Libertad política (Sen / Tocqueville)", body: "Una de las 5 libertades instrumentales de Sen. Para Tocqueville, las asociaciones voluntarias son el antídoto contra el despotismo blando democrático." },
+  "sociedad civil": { title: "Sociedad civil (Tocqueville)", body: "Red de asociaciones voluntarias donde los ciudadanos aprenden a cooperar. Antídoto al individualismo democrático que lleva al 'despotismo blando'." },
+  "bienestar": { title: "Bienestar subjetivo", body: "Dimensión clave del desarrollo más allá del PIB. El WHR 2025 mide con la escala Cantril (0-10). Predictor #1: la calidad de las relaciones sociales." },
+  "psicología": { title: "Psicología (Tolle / Seligman)", body: "Tolle: el sufrimiento surge de identificarse con el ego y el tiempo psicológico. Seligman: la psicología positiva estudia qué hace la vida valiosa, no solo qué la enferma." },
+  "conciencia": { title: "Conciencia (Tolle)", body: "Presencia pura que trasciende el pensamiento compulsivo. Para Tolle, el desarrollo personal genuino requiere ir más allá del ego hacia la conciencia testigo." },
+  "felicidad": { title: "Felicidad (WHR 2025)", body: "Medida con la escala Cantril. Los 6 factores: PIB pc, apoyo social, esperanza de vida, libertad, generosidad, ausencia de corrupción. Países nórdicos lideran consistentemente." },
+  "soledad": { title: "Soledad (WHR 2025)", body: "Equivale a fumar 15 cigarrillos por día en términos de impacto en la salud. La epidemia de soledad moderna es un freno al bienestar igual de grave que la pobreza material." },
+  "idh": { title: "IDH — Índice de Desarrollo Humano (PNUD)", body: "Combina salud (esperanza de vida), educación (años de escolaridad) e ingreso (INB pc). Creado por Mahbub ul Haq y Sen en 1990. Va de 0 a 1." },
+  "polarización": { title: "Polarización (UNDP — Conceição)", body: "La polarización <em>percibida</em> supera a la polarización real: creemos que los otros tienen posiciones más extremas de las que tienen. Esto paraliza la cooperación." },
+  "ia": { title: "Inteligencia Artificial (UNDP)", body: "Puede ser ecualizador (acceso masivo al conocimiento) o amplificador de desigualdades según quién la controle. El informe UNDP advierte que sin regulación, profundizará brechas." },
+  "multilateralismo": { title: "Multilateralismo (UNDP)", body: "El sistema de cooperación internacional enfrenta un 'gridlock': los problemas globales (clima, IA, pandemias) exigen más cooperación justo cuando la política nacional la dificulta." },
+  "psicología positiva": { title: "Psicología positiva (Seligman)", body: "Rama fundada por Seligman en 1998. Modelo PERMA: Positive emotions, Engagement, Relationships, Meaning, Achievement. Estudia las condiciones del florecimiento humano." },
+  "flow": { title: "Flow (Csikszentmihalyi)", body: "Estado de concentración óptima donde el tiempo desaparece, el esfuerzo se siente sin esfuerzo. Ocurre cuando el desafío iguala exactamente la habilidad. Asociado con máxima satisfacción." },
+  "relaciones sociales": { title: "Relaciones sociales (WHR / Harvard)", body: "El Estudio de 80 años de Harvard encontró que la calidad de las relaciones a los 50 años predice mejor la salud a los 80 que el colesterol. Predictor #1 de bienestar." },
+  // S2 — Raza
+  "iq": { title: "IQ — Cociente intelectual", body: "Herrnstein & Murray lo usan como proxy del 'factor g'. Heckman refuta: el AFQT mide habilidades aprendidas, no inteligencia innata. El efecto Flynn demuestra que es maleable." },
+  "raza": { title: "Raza como concepto", body: "La ONU (1978) declara que no hay diferencias intelectuales innatas entre razas. Las diferencias observadas son resultado de factores históricos y socioeconómicos." },
+  "polémica": { title: "Polémica (Bell Curve)", body: "The Bell Curve (1994) generó controversia porque mezclaba argumento estadístico con implicaciones políticas raciales. La crítica metodológica de Heckman y Massey la desmontó." },
+  "refutado": { title: "REFUTADO", body: "La hipótesis racial del subdesarrollo está refutada por: (1) el efecto Flynn, (2) la maleabilidad del IQ por intervenciones tempranas, (3) la evidencia de Chetty sobre el papel del vecindario." },
+  "econometría": { title: "Econometría (Heckman)", body: "Heckman (Nobel 2000) aplica econometría rigurosa a Bell Curve: R²<22% en salarios, AFQT endógeno, variables omitidas cruciales (segregación, calidad escolar, estrés)." },
+  "efecto flynn": { title: "Efecto Flynn", body: "El IQ promedio ha subido ~3 puntos por década en el siglo XX en todos los países estudiados. Si fuera principalmente genético, no podría subir tan rápido. Prueba que el IQ es ambiental." },
+  "intervención temprana": { title: "Intervención temprana (Heckman)", body: "Perry Preschool y Abecedarian: programas de educación preescolar de alta calidad que elevan el IQ, reducen criminalidad y aumentan ingresos décadas después. ROI altísimo." },
+  "metodología": { title: "Metodología (Massey)", body: "Massey señala dos fallas en Bell Curve: (1) variable timing problem — el IQ se mide después de que las condiciones ya lo afectaron; (2) variables omitidas clave como segregación residencial." },
+  "variables omitidas": { title: "Variables omitidas (Massey)", body: "Bell Curve no controla por: segregación residencial, calidad escolar, exposición al plomo, estrés crónico de la pobreza, violencia del vecindario. Sin estos controles, la correlación con IQ es espuria." },
+  "sociología": { title: "Sociología (Massey)", body: "Massey argumenta que la sociología tiene la responsabilidad de mostrar cómo la posición social moldea las capacidades individuales — el IQ es una variable dependiente, no independiente." },
+  "colonialismo": { title: "Colonialismo (Pagden / Engerman-Sokoloff)", body: "Pagden: historia intelectual de cómo Occidente construyó al 'otro' como inferior. E&S: el tipo de institución colonial (plantación, minería, poblamiento) determinó el desarrollo actual." },
+  "otredad": { title: "Otredad (Pagden)", body: "Construcción intelectual del 'bárbaro' como inferior para justificar la dominación. Proceso histórico: griego → romano → cristiano medieval → colonial moderno." },
+  "esclavitud": { title: "Esclavitud (Pagden / Nunn)", body: "Pagden: Aristóteles justificó la 'esclavitud natural'. Nunn: la esclavitud africana tiene correlación negativa con desarrollo actual — destruyó capital social y creó desconfianza generalizada." },
+  "vitoria": { title: "Francisco de Vitoria / Escuela de Salamanca", body: "Primer cuestionamiento sistemático de la legitimidad de la conquista (s. XVI). Los indígenas tienen derechos naturales. Considerado el origen del derecho internacional." },
+  "historia del racismo": { title: "Historia del racismo", body: "Trayectoria: bárbaro griego → maldición de Noé → racismo científico (s. XIX) → eugenesia → Bell Curve (1994). Cada época reinventa la justificación de la jerarquía racial." },
+  "jefferson": { title: "Thomas Jefferson", body: "Paradoja fundacional: escribió 'todos los hombres son creados iguales' y al mismo tiempo era dueño de más de 600 esclavos. Ilustra la brecha entre ideales ilustrados y práctica racista." },
+  "blanqueamiento": { title: "Blanqueamiento (Venezuela)", body: "Política de inmigración europea favorecida para 'mejorar la raza', impulsada por positivistas venezolanos como López Contreras en el s. XX. Refleja el racismo científico aplicado al Estado." },
+  "positivismo": { title: "Positivismo venezolano", body: "Vallenilla Lanz, Blanco Fombona y López Contreras usaron lenguaje científico (darwinismo social, racismo) para legitimar el autoritarismo y la discriminación racial en Venezuela." },
+  "segregación": { title: "Segregación (EE.UU.)", body: "Plessy vs. Ferguson (1896): 'separados pero iguales'. No fue revertido hasta Brown vs. Board (1954). Las leyes anti-miscegenation existieron hasta 1967. Legado en desigualdad actual." },
+  "ee.uu.": { title: "EE.UU. como caso de estudio", body: "El caso americano es central en el debate racial: Plessy, derechos civiles, Bell Curve, y el estudio de Chetty et al. que muestra persistencia de la brecha racial controlando por ingreso." },
+  "derechos civiles": { title: "Derechos civiles", body: "El movimiento de derechos civiles (1954–1968) desmanteló legalmente la segregación. Sin embargo, Chetty et al. muestran que la brecha de movilidad racial persiste décadas después." },
+  "chetty": { title: "Raj Chetty et al. — Race and Economic Opportunity", body: "Con datos de millones de personas: hombres negros tienen peores resultados que blancos incluso con mismo ingreso familiar. El vecindario en la infancia es el factor clave. No es genética." },
+  "movilidad": { title: "Movilidad social (Chetty)", body: "La movilidad intergeneracional en EE.UU. es menor de lo que se cree y está fuertemente segmentada por raza. El vecindario en la infancia predice los resultados en la adultez." },
+  "vecindario": { title: "Vecindario (Chetty)", body: "Crecer en vecindarios con más capital social, mejores escuelas y menor violencia mejora significativamente los resultados de hombres negros. El efecto es mayor en los primeros años de vida." },
+  "empiria": { title: "Evidencia empírica", body: "A lo largo del curso, la evidencia empírica va desplazando las explicaciones: raza (refutada), geografía (parcial), instituciones (robusta). El método importa tanto como la hipótesis." },
+  "onu": { title: "ONU — Declaración sobre Raza (1978)", body: "La UNESCO declara que no existen diferencias intelectuales innatas entre grupos raciales. Las diferencias observadas son producto de condiciones históricas y socioeconómicas, no biológicas." },
+  "declaración": { title: "Declaración ONU sobre Raza (1978)", body: "Consenso científico y político internacional: la raza es una construcción social, no una categoría biológica con implicaciones de capacidad intelectual." },
+  "consenso científico": { title: "Consenso científico sobre raza", body: "La genética moderna confirma que hay más variación genética dentro de los grupos raciales que entre ellos. El concepto de raza como categoría biológica fija no tiene sustento científico." },
+  // S3 — Geografía
+  "geografía": { title: "Geografía (Diamond / Sachs / Easterly-Levine)", body: "Diamond: la geografía determinó quién tuvo gramíneas y animales domesticables. Sachs: el trópico tiene desventajas productivas reales. Easterly-Levine: actúa solo VÍA instituciones." },
+  "domesticación": { title: "Domesticación (Diamond)", body: "El paso de caza-recolección a producción de alimentos. Eurasia tenía 13 mamíferos domesticables >100 kg vs. 1 en América (llama). Esto generó el excedente que hizo posible la civilización." },
+  "causalidad última": { title: "Causas últimas vs. próximas (Diamond)", body: "Causas próximas de Cajamarca: armas, caballos, gérmenes. Causas últimas: disponibilidad de plantas y animales domesticables hace 13,000 años. Diamond busca las raíces más profundas." },
+  "refuta racismo": { title: "Refuta el racismo (Diamond)", body: "Diamond explícitamente refuta las explicaciones raciales: las diferencias no son de capacidad biológica sino de entorno geográfico. Los pueblos 'primitivos' son frecuentemente más inteligentes que sus conquistadores para sobrevivir en su ambiente." },
+  "cajamarca": { title: "Cajamarca 1532 (Diamond)", body: "168 españoles capturan al Inca con 80,000 hombres. Armas + caballos + escritura + organización política + inmunidad a gérmenes — todos producto de la ventaja geográfica eurasiana." },
+  "datos satelitales": { title: "Luces nocturnas — Henderson et al.", body: "Imágenes satelitales de luminosidad nocturna como proxy del PIB donde faltan datos estadísticos confiables. Usado especialmente para África y zonas rurales de Asia." },
+  "persistencia": { title: "Persistencia histórica (Henderson et al.)", body: "Las ciudades persisten donde surgieron aunque el factor original haya desaparecido. Las economías de aglomeración hacen muy costoso relocalizarse. La geografía fijó el mapa económico." },
+  "urbanización": { title: "Urbanización (Henderson et al.)", body: "Los países que urbanizaron temprano (Europa) tienen ventajas persistentes de escala y aglomeración. La urbanización tardía (África, partes de Asia) enfrenta costos de infraestructura mayores." },
+  "aglomeración": { title: "Economías de aglomeración", body: "Las ciudades generan productividad extra: más trabajadores especializados, mercados más grandes, difusión del conocimiento. Una vez formadas, es muy costoso deshacerlas." },
+  "transporte": { title: "Costos de transporte (Henderson / Sachs)", body: "Sin ríos navegables ni puertos naturales, los costos de comercio son hasta 10x mayores. Explica parte de la pobreza persistente en zonas tropicales del interior de África y Latinoamérica." },
+  "trópico": { title: "Trópico (Sachs)", body: "Zonas tropicales tienen en promedio 4.5x menos ingreso que zonas templadas. Causas: menor productividad agrícola, vectores de enfermedades (malaria >18°C), tecnologías no transferibles." },
+  "malaria": { title: "Malaria (Sachs)", body: "Requiere temperatura >18°C para el vector (Anopheles). Reduce hasta 1.3% del PIB anual en países endémicos. Las tecnologías antimalaria desarrolladas en el Norte son insuficientes para el trópico." },
+  "tecnología ecológica": { title: "Tecnologías ecológico-específicas (Sachs)", body: "Las tecnologías de la Revolución Industrial (maquinaria agrícola, semillas mejoradas) fueron diseñadas para climas templados. No funcionan igual en el trópico — se necesita I+D específico." },
+  "trampa de pobreza": { title: "Trampa de pobreza (Sachs)", body: "Los países tropicales más pobres no pueden invertir en las tecnologías que necesitan porque son pobres. Sin intervención externa en I+D tropical, el ciclo no se rompe solo." },
+  "latitud": { title: "Latitud e ingreso (Sachs)", body: "Correlación casi perfecta: a mayor distancia del ecuador (mayor latitud), mayor ingreso per cápita promedio. La correlación más robusta en toda la literatura de desarrollo económico comparado." },
+  "datos empíricos": { title: "Datos empíricos", body: "El curso privilegia la evidencia empírica sobre la especulación teórica. Sachs usa datos de PIB por latitud, Henderson usa satélites, Chetty usa 40 millones de registros fiscales." },
+  "ciudades": { title: "Ciudades y desarrollo (Henderson)", body: "Las ciudades son el motor del crecimiento moderno. La paradoja: los países que más necesitan urbanizarse (África) enfrentan los mayores costos de infraestructura para hacerlo." },
+  // S4-5 — Instituciones
+  "reglas formales": { title: "Reglas formales (North)", body: "Leyes, constituciones, regulaciones. Solo una parte de las instituciones. North enfatiza que sin enforcement efectivo y normas informales compatibles, las reglas formales no funcionan." },
+  "path dependence": { title: "Path dependence — Dependencia del sendero (North)", body: "Las decisiones pasadas restringen las opciones futuras. Las economías de escala en las organizaciones existentes, los costos de salida y la complementariedad de normas hacen difícil el cambio." },
+  "enforcement": { title: "Enforcement — Aplicación de normas (North)", body: "Tercer componente de las instituciones. Sin mecanismos creíbles de aplicación, las reglas formales son papel mojado. El problema de muchos países en desarrollo es el enforcement débil, no las leyes." },
+  "creencias": { title: "Creencias (North 2005)", body: "Las instituciones se construyen sobre modelos mentales compartidos. Si las creencias son incorrectas sobre cómo funciona la economía (ej. URSS), las instituciones resultantes serán disfuncionales." },
+  "modelos mentales": { title: "Modelos mentales (North 2005)", body: "Los individuos construyen representaciones subjetivas del mundo para orientar sus decisiones. Cuando los modelos mentales de las élites son erróneos, generan instituciones que llevan al fracaso." },
+  "no-ergódico": { title: "Mundo no-ergódico (North 2005)", body: "Un sistema ergódico puede predecirse estadísticamente a partir de su historia. El mundo económico NO es ergódico: el cambio es genuino, el futuro no es una repetición del pasado. Los modelos de equilibrio fallan." },
+  "cultura": { title: "Cultura como institución informal (North)", body: "North 2005: el aprendizaje intergeneracional de creencias y valores IS cultura. Es la fuente de persistencia institucional. Explica por qué el trasplante institucional (ej. México copia constitución EUA) fracasa." },
+  "orden político": { title: "Orden político como bien público (NSW)", body: "La paz, estabilidad y derechos son un bien público que el mercado no puede proveer. Sin orden político, los agentes no invierten a largo plazo. Es condición previa del desarrollo." },
+  "compromisos creíbles": { title: "Compromisos creíbles (NSW / Weingast)", body: "El Estado debe comprometerse de forma creíble a respetar los derechos de propiedad. Si los agentes no creen que el Estado cumplirá, no invierten. El compromiso creíble requiere un sistema de creencias compartido." },
+  "a. latina": { title: "América Latina (NSW / Engerman-Sokoloff)", body: "Heredó instituciones personalistas (el poder personal sobre la ley) de la colonia española. NSW: esto dificulta los compromisos creíbles. E&S: las dotaciones coloniales generaron desigualdad persistente." },
+  "origen del estado": { title: "Origen del Estado (Olson)", body: "Olson propone el modelo del bandido estacionario: un señor de la guerra que decide quedarse y proteger su territorio tiene interés en que prospere. El Estado surge del interés egoísta, no de un contrato social." },
+  "mercados": { title: "Mercados (Olson)", body: "Los mercados auto-ejecutables (sin intervención del Estado) son raros. La mayoría requieren contratos exigibles, derechos de propiedad protegidos y moneda confiable — todos bienes públicos que provee el Estado." },
+  "derechos": { title: "Derechos individuales (Olson)", body: "Para Olson, los derechos individuales son prerrequisito del desarrollo, no lujo. Sin seguridad sobre los frutos del propio trabajo, nadie invierte ni innova. El mercado necesita el Estado." },
+  "desigualdad": { title: "Desigualdad (Engerman-Sokoloff)", body: "Las dotaciones iniciales coloniales (plantaciones, minas) generaron desigualdad extrema. Las élites capturaron las instituciones (sufragio censitario, tierra concentrada) para perpetuarla." },
+  "evidencia empírica": { title: "Evidencia empírica robusta (Easterly-Levine)", body: "Instrumento: mortalidad de colonos europeos → tipo de colonia → calidad institucional hoy. Al controlar por instituciones, el coeficiente de geografía desaparece. Las instituciones son causalmente primarias." },
+  "instrumentos": { title: "Variables instrumentales (Easterly-Levine)", body: "Técnica econométrica para identificar causalidad. El instrumento de E&L: la mortalidad de colonos (exógena, afecta el tipo de colonia pero no el PIB actual directamente). Permite inferir causalidad, no solo correlación." },
+  "causalidad": { title: "Causalidad vs. correlación", body: "El gran desafío metodológico del curso. Correlación no implica causalidad. Easterly-Levine usan instrumentos para aislar el efecto causal de las instituciones sobre el desarrollo." },
+  "áfrica": { title: "África (Nunn)", body: "Nunn muestra que la intensidad del comercio de esclavos (s. XVI-XIX) predice negativamente el desarrollo africano actual. El mecanismo: destrucción del capital social y desconfianza generalizada." },
+  "desconfianza": { title: "Desconfianza (Nunn)", body: "En zonas de alta esclavitud histórica, los habitantes actuales muestran menor confianza hacia vecinos, familiares y el gobierno. Esta desconfianza obstaculiza el comercio, la cooperación y las instituciones." },
+  "ecologías": { title: "4 Ecologías (Haber et al.)", body: "Transaccional (comercio, alta densidad), Risk-Pooling (pastoreo, reciprocidad), Autosuficiente (subsistencia) y Pastoril (nómada). La ecología pre-1800 predice el 63% del PIB actual." },
+  "random forest": { title: "Random Forest (Haber et al.)", body: "Algoritmo de machine learning que identifica los predictores más importantes de una variable. Haber lo usa para mostrar que las dotaciones geográficas y ecológicas pre-1800 dominan sobre variables modernas." },
+  "dotaciones": { title: "Dotaciones iniciales (Engerman-Sokoloff / Haber)", body: "Las condiciones geográficas, ecológicas y de población al momento del contacto europeo determinaron qué instituciones surgieron. Estas instituciones persisten siglos después." },
+  "predictores": { title: "Predictores del desarrollo (Haber)", body: "El random forest de Haber muestra que las dotaciones pre-1800 son los mejores predictores del PIB actual. Más que las políticas modernas, la geografía histórica, la ecología y las instituciones coloniales." },
+  "machine learning": { title: "Machine Learning aplicado al desarrollo", body: "Haber et al. usan random forest (no regresión lineal) para capturar relaciones no lineales e interacciones entre variables. El resultado: las dotaciones pre-industriales dominan como predictores." },
+  // S6 — Cultura
+  "protestantismo": { title: "Protestantismo (Weber)", body: "La ética protestante (especialmente calvinista) generó el espíritu del capitalismo como consecuencia no prevista. El éxito económico como señal de gracia divina → ascetismo → acumulación de capital." },
+  "capitalismo": { title: "Espíritu del capitalismo (Weber)", body: "Para Weber, el capitalismo moderno no es solo búsqueda de ganancia (eso es universal) sino una ética de acumulación sistemática y racional con sentido de deber. Surgió del calvinismo." },
+  "beruf": { title: "Beruf — Vocación (Weber)", body: "Término alemán que significa tanto profesión como vocación/llamado. Para Lutero, el trabajo mundano es un servicio a Dios. Para Weber, esta idea secularizada es el núcleo de la ética capitalista." },
+  "jaula de hierro": { title: "Jaula de hierro (Weber)", body: "El capitalismo victorioso ya no necesita apoyo religioso: las fuerzas del mercado imponen la racionalidad instrumental aunque el individuo no tenga motivación religiosa. La jaula se mantiene sola." },
+  "confucianismo": { title: "Confucianismo (Fukuyama)", body: "Weber creyó que el confucianismo obstaculizaría el desarrollo. Fukuyama muestra lo contrario: Japón, Corea, Taiwán, Singapur se desarrollaron con ética confuciana. Refuta la unicidad protestante." },
+  "familismo": { title: "Familismo amoral (Banfield / Fukuyama)", body: "Banfield (sur de Italia): maximizar el beneficio de la familia nuclear inmediata, desconfiando de todos los demás. Fukuyama lo aplica a culturas de bajo capital social bridging." },
+  "determinismo cultural": { title: "Determinismo cultural (Sen)", body: "Sen lo critica: las teorías culturales son post-hoc (se construyen para explicar éxitos ya ocurridos). El caso japonés refuta que solo el protestantismo genera desarrollo." },
+  "japón": { title: "Japón como caso (Fukuyama / Uslar Pietri / Sen)", body: "Refuta múltiples hipótesis: no protestante (refuta Weber), sin recursos naturales (refuta geografía), con disciplina del trabajo y meritocracía (confirma importancia cultural)." },
+  "libertades culturales": { title: "Libertades culturales (Sen)", body: "La libertad de practicar la propia cultura sin discriminación es una dimensión del desarrollo en sí misma, no solo un medio. El desarrollo debe expandir también la diversidad cultural." },
+  "swidler": { title: "Swidler's Tool Kit (Woolcock)", body: "La cultura no dicta valores fijos sino provee una caja de herramientas: hábitos, habilidades y estilos con los que la gente elabora estrategias de acción. Más flexible que el determinismo." },
+  "etnicidad": { title: "Etnicidad como identidad contingente (Woolcock)", body: "La identidad étnica no es fija biológicamente; es construida socialmente y reactivada estratégicamente. Caso Rwanda: la distinción Hutu/Tutsi fue amplificada por la administración colonial belga." },
+  "mecanismos": { title: "Mecanismos específicos (Woolcock)", body: "4ª generación de investigación: pasar de '¿importa la cultura?' a identificar mecanismos causales específicos y variación intra-nacional (no tratar a 'África' o 'Venezuela' como culturalmente homogéneos)." },
+  "variación intra-nacional": { title: "Variación intra-nacional (Woolcock)", body: "Dentro de cada país hay enorme variación cultural. Tratar a Venezuela o Nigeria como culturalmente homogéneos oculta los mecanismos relevantes. Hay que identificar 'desviaciones positivas' internas." },
+  "venezuela": { title: "Venezuela como caso de estudio", body: "Aparece en múltiples autores: Uslar Pietri (mentalidad rentista), Briceño Guerrero (tres discursos), Proyecto Pobreza UCAB (58.4% locus externo), Tocqueville indirectamente (México ≈ Venezuela)." },
+  "mentalidad rentista": { title: "Mentalidad rentista (Uslar Pietri)", body: "El petróleo perpetuó la mentalidad colonial de extracción y distribución de la renta. Venezuela aprendió a repartir, no a producir. Los Cuatro Dragones (sin recursos) lo demuestran por contraste." },
+  "petróleo": { title: "Petróleo venezolano (Uslar Pietri)", body: "'Sembrar el petróleo' fue el llamado de Uslar Pietri: usar la renta para crear capacidades productivas. En lugar de eso, el petróleo perpetuó la mentalidad de recibir sin trabajar." },
+  "dragones asiáticos": { title: "Cuatro Dragones asiáticos", body: "Corea del Sur, Taiwán, Hong Kong y Singapur: se desarrollaron sin recursos naturales, con poblaciones inicialmente pobres, demostrando que la mentalidad y las instituciones son más decisivas que la geografía." },
+  "identidad": { title: "Identidad cultural (Briceño Guerrero)", body: "América Latina tiene una identidad fracturada entre lo europeo, lo criollo y lo popular/indígena-africano. Ninguno logra síntesis ni hegemonía cultural estable." },
+  "colonialismo cultural": { title: "Colonialismo intelectual (Briceño Guerrero)", body: "Seguimos pensando con categorías europeas aplicadas a una realidad diferente. El 'discurso modernizador' importa soluciones ajenas sin adaptarlas al contexto latinoamericano." },
+  "laberinto": { title: "Laberinto sin salida (Briceño Guerrero)", body: "Los tres discursos se vetoean mutuamente: ninguno puede gobernar solo, ninguno puede ser eliminado. Venezuela (y A. Latina) está atrapada en este laberinto de identidades en conflicto." },
+  "locus de control": { title: "Locus de control (Proyecto Pobreza UCAB)", body: "Concepto de Rotter (1966): creencia sobre si el destino está controlado por uno mismo (interno) o por fuerzas externas (externo). Venezuela: 58.4% locus externo (dependiente + metasocial)." },
+  // S6 slides extras
+  "weber": { title: "Max Weber (1864–1920)", body: "Sociólogo alemán, padre de la sociología comprensiva. Su obra clave: La Ética Protestante (1905) y Economía y Sociedad. También trabajó sobre burocracia, dominación legítima y el proceso de racionalización." },
+  "calvino": { title: "Juan Calvino (1509–1564)", body: "Reformador protestante, teólogo de la predestinación. Su doctrina: Dios elige a los salvados desde la eternidad; los creyentes buscan señales de su elección. Weber lo identifica como origen involuntario del espíritu capitalista." },
+  "lutero": { title: "Martín Lutero (1483–1546)", body: "Iniciador de la Reforma Protestante (1517). Introdujo el concepto de Beruf (vocación) como trabajo mundano sagrado. Era un tradicionalista — no pretendía crear capitalismo." },
+  "predestinación": { title: "Predestinación (Calvino / Weber)", body: "Doctrina calvinista: Dios ya eligió desde la eternidad quiénes serán salvados. Genera angustia existencial → búsqueda de señales de gracia → el éxito económico como confirmación → acumulación." },
+  "costos transacción": { title: "Costos de transacción (Coase / North / Fukuyama)", body: "Costos de negociar, monitorear y hacer cumplir contratos. El capital social los reduce (más confianza = menos abogados). North: las instituciones existen para reducir los costos de transacción." },
+  "harrison": { title: "Lawrence Harrison", body: "Autor de 'The Central Liberal Truth' y 'Underdevelopment is a State of Mind'. Identifica 20 factores culturales que distinguen culturas orientadas al progreso de las orientadas a la estabilidad." },
+  "valores culturales": { title: "Valores culturales (Harrison)", body: "Harrison propone que ciertos valores (orientación al futuro, meritocracia, confianza en el individuo, ética del trabajo) están sistemáticamente asociados con el desarrollo económico sostenido." },
+  "dicotomías": { title: "Dicotomías parsonianas", body: "Talcott Parsons propone 5 pares de variables pattern (adscripción/logro, afectividad/neutralidad, particularismo/universalismo, difusividad/especificidad, orientación propia/colectiva) para clasificar culturas." },
+  "porter": { title: "Michael Porter", body: "Economista de Harvard, teoría de la ventaja competitiva. Aplicada al desarrollo: la prosperidad viene de la productividad (calidad, innovación), no de la posesión de recursos naturales." },
+  "productividad": { title: "Productividad (Porter)", body: "Para Porter, la competitividad nacional se basa en la productividad, no en la abundancia de recursos. Explica por qué Japón, Corea y Suiza son ricos sin recursos y Venezuela es pobre con petróleo." },
+  "competitividad": { title: "Competitividad (Porter)", body: "Porter identifica el 'diamante de competitividad': condiciones de factores, condiciones de demanda, industrias relacionadas y contexto local de rivalidad. La cultura afecta los cuatro vértices." },
+  "relativismo": { title: "Relativismo cultural (Edgerton)", body: "La idea de que todas las culturas son igualmente válidas y no pueden ser juzgadas. Edgerton critica su versión extrema: hay prácticas culturales genuinamente inadaptativas que dañan a sus propios miembros." },
+  "edgerton": { title: "Robert Edgerton — Sick Societies", body: "Muestra que las culturas pueden tener prácticas irracionales y dañinas para sus propios miembros. Rechaza tanto el etnocentrismo como el relativismo extremo. Las culturas pueden y deben ser evaluadas." },
+  "irracionalidad": { title: "Irracionalidad cultural (Edgerton / North)", body: "Las culturas pueden mantener prácticas irracionales si no hay retroalimentación efectiva (mercados, elecciones). La 'March of Folly' de Tuchman documenta decisiones irracionales de grandes civilizaciones." },
+  "ucab": { title: "Proyecto Pobreza — UCAB", body: "Investigación de la Universidad Católica Andrés Bello sobre la pobreza venezolana. Desarrolló el 'mapa cultural' con 6 arquetipos y midió el locus de control. Solo 13.2% tiene el perfil 'integrado' moderno." },
+  "arquetipos": { title: "Arquetipos culturales venezolanos (UCAB)", body: "6 grupos: Rezagados (27.6%), Tutelados (10.8%), Emancipados (25.2%), Movilizados (4.2%), Desarraigados (19.1%), Integrados (13.2%). Solo los últimos tienen el perfil asociado al desarrollo moderno." },
+  "parsons": { title: "Talcott Parsons (1902–1979)", body: "Sociólogo estadounidense, teoría estructural-funcionalista. Sus 'variables pattern' clasifican a las sociedades en tradicionales vs. modernas. El Proyecto UCAB las aplica a Venezuela." },
+  "modernidad": { title: "Modernidad individual (Proyecto UCAB)", body: "El UCAB concluye que la 'modernidad individual' (locus interno, orientación al desempeño, universalismo) es condición cultural necesaria —no suficiente— para el desarrollo." },
+  "woolcock": { title: "Michael Woolcock (Banco Mundial)", body: "Investiga la intersección entre cultura, capital social e instituciones en el desarrollo. Mapea 4 generaciones de investigación y aboga por pasar de grandes teorías a mecanismos específicos y contextuales." },
+  "aspiraciones": { title: "Capacidad de aspirar (Appadurai)", body: "Antropólogo Appadurai: las culturas que suprimen las aspiraciones de sus miembros (especialmente los pobres) limitan el desarrollo. La capacidad de imaginar un futuro diferente es pre-condición de la agencia." },
+  "rwanda": { title: "Rwanda como caso (Woolcock)", body: "La identidad Hutu/Tutsi no era una diferencia étnica primordial fija: fue amplificada y 'biologizada' por la administración colonial belga (cédulas de identidad racial). Muestra que la etnicidad es una variable dependiente." },
+  "rentas": { title: "Búsqueda de rentas (North / NSW)", body: "En el orden no consensual, los actores políticos invierten recursos en conseguir protecciones y privilegios del Estado (lobbying, corrupción) en lugar de en producir. Consume recursos sin crear valor." },
+  "tocqueville": { title: "Alexis de Tocqueville (1805–1859)", body: "Aristócrata francés que visitó EE.UU. en 1831 y escribió 'La Democracia en América'. Predijo con asombrosa precisión los peligros de la democracia moderna: individualismo, despotismo blando, tiranía de la mayoría." },
+  "eua vs méxico": { title: "EUA vs. México (Tocqueville / NSW)", body: "Tocqueville y NSW señalan que México copió la constitución federal de EUA pero sin los hábitos y costumbres previos. Las instituciones sin cultura de soporte no funcionan. La diferencia está en los valores previos." },
+  "hábitos": { title: "Hábitos y costumbres (Tocqueville)", body: "Para Tocqueville, los hábitos del corazón ('moeurs') son más importantes que las leyes para el funcionamiento de la democracia. Sin ellos, las instituciones formales son letra muerta." },
+  "briceño guerrero": { title: "José Manuel Briceño Guerrero", body: "Filósofo venezolano, autor de 'El Laberinto de los Tres Minotauros'. Analiza la identidad latinoamericana como fragmentada en tres discursos irreconciliables: mantuano, modernizador y salvaje." },
+  "laberinto cultural": { title: "Laberinto cultural (Briceño Guerrero)", body: "América Latina no puede gobernar su vida pública porque tres visiones del mundo se vetoean mutuamente. No hay síntesis posible dentro de los términos del laberinto — se necesita reconocerlo para salir." },
+  "uslar pietri": { title: "Arturo Uslar Pietri (1906–2001)", body: "Escritor, político e intelectual venezolano. Acuñó 'sembrar el petróleo' (1936). Argumenta que el subdesarrollo es fundamentalmente mental: actitud hacia el trabajo, el ahorro y la acción individual." },
+  "mentalidad": { title: "Mentalidad (Uslar Pietri)", body: "'El subdesarrollo es, antes que todo, una cuestión mental.' La mentalidad del conquistador/extractor vs. la del granjero/artesano. Japón e Inglaterra como modelos de mentalidad productiva." },
+  "colonos ingleses": { title: "Colonos ingleses (Uslar Pietri)", body: "Llegaron con dignidad del trabajo y virtud del ahorro, sin apoyo del gobierno. Contraste con el conquistador español que buscaba riqueza rápida y dependía de la Corona. Esta diferencia explica el desarrollo divergente." },
+  "círculo virtuoso": { title: "Círculo virtuoso (Slide de cierre)", body: "Institucionalidad sólida → genera confianza → refuerza cultura productiva → fortalece instituciones. El círculo puede ser virtuoso o vicioso. Venezuela está atrapada en el vicioso." },
+  "cambio cultural": { title: "¿Es posible el cambio cultural?", body: "El profesor concluye que sí: el Metro de Caracas generó normas de comportamiento moderno que no existían. Canadá construyó cultura cívica multicultural. El cambio es posible pero requiere instituciones que lo anclen." },
+  "metro caracas": { title: "Metro de Caracas como ejemplo", body: "Ejemplo del profesor: el Metro de Caracas (inaugurado 1983) generó normas de puntualidad, limpieza y respeto que no existían en la cultura venezolana previa. Las instituciones pueden cambiar la cultura." },
+  "canadá": { title: "Canadá como ejemplo (Slide 24)", body: "Recibió oleadas de inmigrantes de culturas muy distintas y construyó una cultura cívica común a través de instituciones, derechos y políticas de integración. Demuestra que la cultura no es destino." },
+
+  // ── Tags específicos de la pestaña Presentaciones ──────────
+  "motivación": { title: "Motivación del curso", body: "El contraste Cité Soleil/Oslo o Sabaneta/Noruega como pregunta central: ¿por qué unos países son ricos y otros pobres? El curso recorre y descarta explicaciones hasta llegar a instituciones y cultura." },
+  "preguntas del curso": { title: "Preguntas centrales del curso", body: "¿Qué es el desarrollo? ¿Lo determinan la raza, la geografía, las instituciones o la cultura? El curso avanza descartando explicaciones simples y construyendo una visión multicausal." },
+  "filosofía": { title: "Filosofía y desarrollo", body: "La pregunta sobre el buen vivir viene de la filosofía (Aristóteles, Buda). El profesor usa esta tensión para abrir el debate sobre qué tipo de bienestar busca el desarrollo más allá del PIB." },
+  "pib": { title: "PIB y sus límites", body: "Kennedy: el GNP mide publicidad de cigarrillos y bombas pero no la salud de los niños. El PIB mide transacciones monetarias, no bienestar. Motiva el IDH, la Comisión Stiglitz y las métricas alternativas." },
+  "límites del crecimiento": { title: "Límites del crecimiento económico", body: "El crecimiento del PIB per cápita no genera automáticamente bienestar (paradoja de Easterlin). La Comisión Stiglitz-Sen-Fitoussi (2009) recomendó ir más allá: medir distribución, sostenibilidad y bienestar subjetivo." },
+  "crecimiento económico": { title: "Teorías del crecimiento económico", body: "Harrod-Domar: crecimiento = ahorro / coeficiente de capital. Solow: añade tecnología exógena; en el largo plazo solo el progreso técnico sostiene el crecimiento. Lucas: tecnología endógena vía capital humano." },
+  "solow": { title: "Modelo de Solow (1956)", body: "El capital tiene rendimientos decrecientes → los países pobres crecen más rápido que los ricos → convergencia. El 'residuo de Solow' (PTF) explica lo que capital y trabajo no pueden. Solow: ganó el Nobel en 1987." },
+  "ptf": { title: "Productividad Total de Factores (PTF)", body: "Lo que el modelo no puede explicar con capital y trabajo. Incluye tecnología, instituciones, calidad del capital humano. En A. Latina la PTF es negativa en varios períodos — se usa capital sin eficiencia." },
+  "gobernanza": { title: "Gobernanza (WGI — Banco Mundial)", body: "6 dimensiones: voz y rendición de cuentas, estabilidad política, efectividad del gobierno, calidad regulatoria, Estado de derecho, control de la corrupción. Fuertes predictores del desarrollo." },
+  "medición": { title: "Medición del desarrollo", body: "IDH (1990): salud + educación + ingreso. WGI: gobernanza. Stiglitz Commission: bienestar subjetivo. Happy Planet Index: bienestar + huella ecológica. Cada métrica refleja una teoría del desarrollo." },
+  "ayuda internacional": { title: "Ayuda internacional (Easterly)", body: "'White Man's Burden': la ayuda no funciona sin instituciones locales capaces de absorberla. Easterly distingue Planners (soluciones top-down) vs. Searchers (locales bottom-up). La arrogancia planificadora perpetúa el subdesarrollo." },
+  "instituciones": { title: "Instituciones (North)", body: "Reglas del juego: formales (leyes), informales (normas, convenciones) y mecanismos de enforcement. Sin los tres componentes, el mercado no funciona. Son el determinante más robusto del desarrollo según Easterly & Levine." },
+  "crítica": { title: "Crítica a enfoques dominantes", body: "El curso es crítico de: el PIB como medida única, el racismo científico, la geografía como destino, la ayuda sin instituciones, el determinismo cultural. La evidencia empírica desplaza a las grandes narrativas." },
+  "colonias": { title: "Tipos de colonias (Engerman-Sokoloff)", body: "3 tipos según dotación inicial: (1) plantación/esclavitud → desigualdad extrema → instituciones extractivas; (2) minería/trabajo forzado → encomienda; (3) clima templado/pequeñas fincas → instituciones incluyentes." },
+  "desigualdad persistente": { title: "Desigualdad persistente (Engerman-Sokoloff)", body: "Las élites coloniales capturaron las instituciones políticas para mantener su ventaja: sufragio censitario, concentración de tierra, acceso desigual a educación y crédito. El mecanismo de perpetuación es político, no solo económico." },
+  "diagrama causal": { title: "Diagrama causal del desarrollo", body: "Easterly & Levine presentan la cadena: Geografía (mortalidad de colonos) → Tipo de colonia → Calidad institucional hoy → PIB per cápita. Al controlar por instituciones, el coeficiente de geografía desaparece." },
+  "regresión": { title: "Regresión econométrica", body: "Herramienta estadística que mide la relación entre variables controlando por otras. Easterly & Levine usan variables instrumentales para resolver el problema de endogeneidad y establecer causalidad, no solo correlación." },
+  "datos": { title: "Datos empíricos (Nunn)", body: "Nunn combina registros históricos del comercio de esclavos con datos actuales de PIB y encuestas de confianza para establecer la correlación negativa entre esclavitud histórica y desarrollo presente." },
+  "predicción": { title: "Predicción con machine learning (Haber)", body: "El random forest de Haber et al. identifica cuáles variables predicen mejor el PIB actual. Resultado: las dotaciones ecológicas pre-1800 tienen mayor poder predictivo que las políticas económicas modernas." },
+  "north": { title: "Douglass North (Nobel 1993)", body: "Padre del nuevo institucionalismo económico. Instituciones = reglas del juego (formales + informales + enforcement). Path dependence: el cambio institucional es incremental. La privatización sin marco institucional no funciona." },
+  "olson": { title: "Mancur Olson", body: "Modelo del bandido estacionario: el origen del Estado en el interés egoísta del gobernante que prefiere proteger su fuente de renta. Los mercados auto-ejecutables son raros; la mayoría requieren construcción social del Estado." },
+  "estado": { title: "El Estado y el desarrollo", body: "Olson: 3 funciones básicas del Estado desarrollista: (1) seguridad de derechos de propiedad, (2) enforcement imparcial de contratos, (3) bienes públicos que el mercado no provee. Pocas democracias en desarrollo cumplen las 3." },
+  "caudillismo": { title: "Caudillismo (NSW / América Latina)", body: "Herencia de instituciones personalistas de la colonia española: el poder del individuo sobre la ley. NSW: esto dificulta los compromisos creíbles. El caudillo es el 'bandido estacionario' latinoamericano que nunca se formalizó como Estado de derecho." },
+};
+
+
+const popover = document.createElement('div');
+popover.className = 'tag-popover';
+popover.innerHTML = '<div class="tag-popover-title"></div><div class="tag-popover-body"></div><div class="tag-popover-arrow"></div>';
+document.body.appendChild(popover);
+
+let hideTimer;
+
+function showPopover(tag, rect) {
+  const key = tag.toLowerCase().trim();
+  const info = TAG_INFO[key];
+  if (!info) return;
+
+  clearTimeout(hideTimer);
+  popover.querySelector('.tag-popover-title').textContent = info.title;
+  popover.querySelector('.tag-popover-body').innerHTML = info.body;
+
+  popover.classList.remove('visible');
+  popover.style.left = '-9999px';
+  popover.style.top = '-9999px';
+
+  // position: fixed → coordinates are viewport-relative, never add scrollY
+  const pw = 280; // min-width
+  const vw = window.innerWidth;
+
+  let left = rect.left + rect.width / 2 - pw / 2;
+  let below = rect.top < 160; // not enough room above → show below
+
+  let top = below ? rect.bottom + 10 : rect.top - 12;
+  if (!below) popover.style.transform = 'translateY(-100%)';
+  else popover.style.transform = 'translateY(0)';
+
+  // Clamp horizontal so it stays inside the viewport
+  left = Math.max(8, Math.min(left, vw - pw - 8));
+
+  popover.style.left = left + 'px';
+  popover.style.top = top + 'px';
+  popover.classList.add('visible');
+}
+
+document.addEventListener('click', e => {
+  const tag = e.target.closest('.tag');
+  if (tag) {
+    e.stopPropagation();
+    const rect = tag.getBoundingClientRect();
+    showPopover(tag.textContent, rect);
+    return;
+  }
+  hideTimer = setTimeout(() => popover.classList.remove('visible'), 120);
+});
+
+document.addEventListener('scroll', () => {
+  if (popover.classList.contains('visible')) popover.classList.remove('visible');
+}, { passive: true });
+</script>
+
+</body>
+</html>
